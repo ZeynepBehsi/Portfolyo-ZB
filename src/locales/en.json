@@ -6,6 +6,7 @@
     "expertise": "EXPERTISE",
     "articles": "PUBLICATIONS",
     "training": "TEACH & COACH",
+    "techstack": "TECHNOLOGIES",
     "contact": "CONTACT"
   },
   "hero": {
@@ -45,7 +46,7 @@
         "highlight": "End-to-end automation solutions"
       },
       "timeSeries": {
-        "title": "Time Series & Business Intelligence",
+        "title": "Business Intelligence",
         "description": "Developing forecasting models and analytical dashboards that translate raw data into strategic business decisions. Leveraging a marketing analytics background to bridge the gap between technical modeling and actionable business insights.",
         "keywords": "Forecasting · Predictive Analytics · Data-Driven Strategy · Dashboard Design",
         "highlight": "2 years of marketing analytics experience"
@@ -75,6 +76,18 @@
       "career": {
         "title": "Career & Project Consulting",
         "description": "One-on-one mentorship for career transitions into data science, portfolio development, interview preparation, and hands-on guidance for integrating ML into professional workflows."
+      },
+      "rag": {
+        "title": "AI Agents & RAG Systems",
+        "description": "Hands-on program covering autonomous AI agent architectures and Retrieval-Augmented Generation pipelines. Learn to build production-ready systems that reason, retrieve, and act — using LangChain, vector databases, and tool-use frameworks."
+      },
+      "stats": {
+        "title": "Statistics for Data Science",
+        "description": "Foundational and applied statistics program covering probability theory, hypothesis testing, regression analysis, and Bayesian thinking — designed to build rigorous analytical reasoning for data science practice."
+      },
+      "llm": {
+        "title": "LLM & Generative AI",
+        "description": "Practical program on large language models and generative AI applications. From API integration and prompt engineering to fine-tuning and evaluation — learn to build intelligent LLM-powered products."
       }
     }
   },
@@ -118,7 +131,7 @@
     }
   },
   "footer": {
-    "description": "Let's design and build the new world together.",
+    "description": "Let's build intelligent systems that matter.",
     "pages": "Pages",
     "resources": "Resources",
     "contact": "Contact",

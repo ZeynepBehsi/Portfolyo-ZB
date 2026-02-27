@@ -20,12 +20,12 @@ const MainPage = () => (
     <Navbar />
     <main>
       <Hero />
-      <TechStack />
       <About />
       <Expertise />
       <Portfolio />
-      <Training />
       <Articles />
+      <Training />
+      <TechStack />
       <Contact />
     </main>
     <Footer />

@@ -4,17 +4,17 @@ import { Box, Container, Typography, Button } from '@mui/material';
 
 const SR = "'Sora', sans-serif";
 
-// Center node
-const CX = 350, CY = 232, CR = 70;
+const CX = 350, CY = 280, CR = 70;
 
-// Outer nodes: 2x2 layout
 const NODES = [
-  { key: 'ds',     lines: ['Data Science', 'Fundamentals'],       x: 112, y: 105 },
-  { key: 'ml',     lines: ['Machine Learning', '& Deep Learning'], x: 588, y: 105 },
-  { key: 'ai',     lines: ['AI-Powered', 'Learning Program'],     x: 112, y: 360 },
-  { key: 'career', lines: ['Career &', 'Consulting'],             x: 588, y: 360 },
+  { key: 'ds',     lines: ['Data Science', 'Fundamentals'],        x: 350, y: 75  },
+  { key: 'ml',     lines: ['Machine Learning', '& Deep Learning'], x: 528, y: 178 },
+  { key: 'rag',    lines: ['AI Agents &', 'RAG Systems'],          x: 528, y: 383 },
+  { key: 'llm',    lines: ['LLM &', 'Generative AI'],              x: 350, y: 485 },
+  { key: 'career', lines: ['Career &', 'Consulting'],              x: 173, y: 383 },
+  { key: 'ai',     lines: ['AI-Powered', 'Learning'],              x: 173, y: 178 },
 ];
-const NR = 68;
+const NR = 62;
 
 const Training = () => {
   const { t } = useTranslation();
@@ -22,7 +22,7 @@ const Training = () => {
   return (
     <Box id="training" component="section" sx={{ bgcolor: '#ffffff', py: { xs: 8, md: 11 } }}>
       <Container maxWidth="lg">
-        {/* Header — title only */}
+        {/* Header */}
         <Box sx={{ mb: { xs: 6, md: 8 }, pb: 4, borderBottom: '1px solid #e4e4ea' }}>
           <Typography
             variant="h2"
@@ -48,14 +48,41 @@ const Training = () => {
             alignItems: 'center',
           }}
         >
-          {/* Left — Mindmap */}
+          {/* Left — Animated Mindmap */}
           <Box sx={{ flex: '0 0 54%', maxWidth: { md: '54%' }, width: '100%' }}>
             <Box
               component="svg"
-              viewBox="0 0 700 465"
+              viewBox="0 0 700 560"
               sx={{ width: '100%', height: 'auto', display: 'block' }}
             >
-              {/* Connection lines — drawn first */}
+              <defs>
+                <filter id="glow-center" x="-40%" y="-40%" width="180%" height="180%">
+                  <feGaussianBlur stdDeviation="7" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+                <style>{`
+                  @keyframes center-pulse {
+                    0%, 100% { transform: scale(1); opacity: 1; }
+                    50% { transform: scale(1.09); opacity: 0.87; }
+                  }
+                  .center-circle {
+                    transform-box: fill-box;
+                    transform-origin: center;
+                    animation: center-pulse 3.2s ease-in-out infinite;
+                  }
+                  @keyframes dash-move {
+                    to { stroke-dashoffset: -22; }
+                  }
+                  .animated-line {
+                    animation: dash-move 2.5s linear infinite;
+                  }
+                `}</style>
+              </defs>
+
+              {/* Connection lines — static */}
               {NODES.map((node) => {
                 const dx = node.x - CX;
                 const dy = node.y - CY;
@@ -65,6 +92,7 @@ const Training = () => {
                 return (
                   <line
                     key={node.key}
+                    className="animated-line"
                     x1={CX + ux * CR}
                     y1={CY + uy * CR}
                     x2={node.x - ux * NR}
@@ -76,7 +104,7 @@ const Training = () => {
                 );
               })}
 
-              {/* Outer nodes */}
+              {/* Outer nodes — static */}
               {NODES.map((node) => (
                 <g key={node.key}>
                   <circle cx={node.x} cy={node.y} r={NR} fill="#2D2D3F" />
@@ -103,8 +131,15 @@ const Training = () => {
                 </g>
               ))}
 
-              {/* Center node — drawn last */}
-              <circle cx={CX} cy={CY} r={CR} fill="#FF6B35" />
+              {/* Center node — pulsing glow */}
+              <circle
+                className="center-circle"
+                cx={CX}
+                cy={CY}
+                r={CR}
+                fill="#FF6B35"
+                filter="url(#glow-center)"
+              />
               <text
                 x={CX}
                 y={CY}
@@ -120,7 +155,7 @@ const Training = () => {
             </Box>
           </Box>
 
-          {/* Right — Description + Button */}
+          {/* Right — Description + Buttons */}
           <Box
             sx={{
               flex: 1,
@@ -130,7 +165,6 @@ const Training = () => {
               gap: 4,
             }}
           >
-            {/* Green accent line */}
             <Box sx={{ width: 44, height: 4, bgcolor: '#82b440', borderRadius: 9999 }} />
 
             <Typography

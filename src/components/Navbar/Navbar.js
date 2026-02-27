@@ -17,17 +17,19 @@ const Navbar = () => {
   const trigger = useScrollTrigger({ disableHysteresis: true, threshold: 60 });
 
   const navItems = [
-    { labelKey: 'navbar.about',      href: '#about'      },
-    { labelKey: 'navbar.portfolio',  href: '#portfolio'  },
-    { labelKey: 'navbar.expertise',  href: '#expertise'  },
-    { labelKey: 'navbar.articles',   href: '#articles'   },
-    { labelKey: 'navbar.training',   href: '#training'   },
-    { labelKey: 'navbar.contact',    href: '#contact'    },
+    { labelKey: 'navbar.about',       href: '#about'      },
+    { labelKey: 'navbar.expertise',   href: '#expertise'  },
+    { labelKey: 'navbar.portfolio',   href: '#portfolio'  },
+    { labelKey: 'navbar.articles',    href: '#articles'   },
+    { labelKey: 'navbar.training',    href: '#training'   },
+    { labelKey: 'navbar.techstack',   href: '#techstack'  },
+    { labelKey: 'navbar.contact',     href: '#contact'    },
   ];
 
-  const textColor  = '#6b6880';
-  const textHover  = '#1a152e';
-  const logoColor  = '#1a152e';
+  // Colours shift when scrolled over dark hero
+  const textColor  = trigger ? '#6b6880'              : 'rgba(255,255,255,0.80)';
+  const textHover  = trigger ? '#1a152e'              : '#ffffff';
+  const logoColor  = trigger ? '#1a152e'              : '#ffffff';
   const activeLang = '#82b440';
 
   const drawer = (
@@ -62,17 +64,12 @@ const Navbar = () => {
         }}
       >
         <Container maxWidth="lg">
-          <Toolbar disableGutters sx={{ justifyContent: 'space-between', py: 1.25 }}>
-            <Typography component="a" href="#hero"
-              sx={{ fontFamily: SR, fontWeight: 700, fontSize: '1rem', color: logoColor, textDecoration: 'none', letterSpacing: '0.06em', transition: 'color 0.3s' }}>
-              PORTFOLIO
-            </Typography>
-
+          <Toolbar disableGutters sx={{ justifyContent: 'flex-end', py: 1.25 }}>
             {/* Desktop nav */}
             <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 3, alignItems: 'center' }}>
               {navItems.map((item) => (
                 <Button key={item.labelKey} href={item.href}
-                  sx={{ color: textColor, fontSize: '0.85rem', fontWeight: 500, letterSpacing: '0.03em', fontFamily: SR, minWidth: 0, px: 0.5, transition: 'color 0.2s', '&:hover': { bgcolor: 'transparent', color: textHover } }}>
+                  sx={{ color: textColor, fontSize: '0.92rem', fontWeight: 500, letterSpacing: '0.03em', fontFamily: SR, minWidth: 0, px: 0.5, transition: 'color 0.2s', '&:hover': { bgcolor: 'transparent', color: textHover } }}>
                   {t(item.labelKey)}
                 </Button>
               ))}
@@ -83,7 +80,7 @@ const Navbar = () => {
                   <Box key={lang} sx={{ display: 'flex', alignItems: 'center' }}>
                     {idx === 1 && <Typography sx={{ color: textColor, fontSize: '0.7rem', opacity: 0.4, mx: 0.5 }}>|</Typography>}
                     <Button onClick={() => i18n.changeLanguage(lang)} size="small"
-                      sx={{ color: i18n.language === lang ? activeLang : textColor, fontWeight: i18n.language === lang ? 700 : 400, fontSize: '0.78rem', minWidth: 0, px: 0.5, fontFamily: SR, '&:hover': { bgcolor: 'transparent', color: textHover } }}>
+                      sx={{ color: i18n.language === lang ? activeLang : textColor, fontWeight: i18n.language === lang ? 700 : 400, fontSize: '0.82rem', minWidth: 0, px: 0.5, fontFamily: SR, '&:hover': { bgcolor: 'transparent', color: textHover } }}>
                       {lang.toUpperCase()}
                     </Button>
                   </Box>
@@ -94,10 +91,10 @@ const Navbar = () => {
             {/* Mobile */}
             <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center', gap: 1 }}>
               <Button onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'tr' : 'en')} size="small"
-                sx={{ color: '#1a152e', fontSize: '0.78rem', fontWeight: 600, minWidth: 0, px: 1, border: '1px solid #e4e4ea', borderRadius: 9999, fontFamily: SR, '&:hover': { bgcolor: '#f2f1f3' } }}>
+                sx={{ color: logoColor, fontSize: '0.78rem', fontWeight: 600, minWidth: 0, px: 1, border: `1px solid ${trigger ? '#e4e4ea' : 'rgba(255,255,255,0.25)'}`, borderRadius: 9999, fontFamily: SR, '&:hover': { bgcolor: trigger ? '#f2f1f3' : 'rgba(255,255,255,0.1)' } }}>
                 {i18n.language === 'en' ? 'TR' : 'EN'}
               </Button>
-              <IconButton onClick={() => setMobileOpen(true)} sx={{ color: '#1a152e' }}>
+              <IconButton onClick={() => setMobileOpen(true)} sx={{ color: logoColor }}>
                 <MenuIcon />
               </IconButton>
             </Box>

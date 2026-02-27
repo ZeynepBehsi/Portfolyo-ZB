@@ -6,6 +6,7 @@
     "expertise": "UZMANLIK",
     "articles": "YAYINLAR",
     "training": "TEACH & COACH",
+    "techstack": "TEKNOLOJİLER",
     "contact": "İLETİŞİM"
   },
   "hero": {
@@ -45,7 +46,7 @@
         "highlight": "Uçtan uca otomasyon çözümleri"
       },
       "timeSeries": {
-        "title": "Zaman Serileri ve İş Zekası",
+        "title": "İş Zekası",
         "description": "Ham veriyi stratejik iş kararlarına dönüştüren tahmin modelleri ve analitik gösterge panelleri geliştiriyorum. Pazarlama analitiği geçmişimi teknik modelleme ile iş içgörüleri arasındaki köprüyü kurmak için kullanıyorum.",
         "keywords": "Tahmin · Öngörücü Analitik · Veri Odaklı Strateji · Gösterge Paneli Tasarımı",
         "highlight": "2 yıl pazarlama analitiği deneyimi"
@@ -75,6 +76,18 @@
       "career": {
         "title": "Kariyer & Proje Danışmanlığı",
         "description": "Veri bilimine kariyer geçişi, portföy geliştirme, mülakat hazırlığı ve ML'yi profesyonel iş akışlarına entegre etmek için uygulamalı rehberlik sunan bire bir mentorluk."
+      },
+      "rag": {
+        "title": "AI Ajanları & RAG Sistemleri",
+        "description": "Özerk yapay zeka ajan mimarileri ve Retrieval-Augmented Generation pipeline'larını ele alan uygulamalı program. LangChain, vektör veritabanları ve araç kullanımı çerçeveleriyle üretime hazır sistemler inşa etmeyi öğrenin."
+      },
+      "stats": {
+        "title": "Veri Bilimi için İstatistik",
+        "description": "Olasılık teorisi, hipotez testleri, regresyon analizi ve Bayesci düşünceyi kapsayan temel ve uygulamalı istatistik programı — veri bilimi pratiği için güçlü analitik akıl yürütme inşa etmek üzere tasarlandı."
+      },
+      "llm": {
+        "title": "LLM & Üretici Yapay Zeka",
+        "description": "Büyük dil modelleri ve üretici yapay zeka uygulamaları üzerine pratik program. API entegrasyonu ve prompt mühendisliğinden ince ayar ve değerlendirmeye kadar — akıllı LLM destekli ürünler inşa etmeyi öğrenin."
       }
     }
   },
@@ -118,7 +131,7 @@
     }
   },
   "footer": {
-    "description": "Yeni dünyayı birlikte tasarlayalım ve inşa edelim.",
+    "description": "Önemli olan akıllı sistemleri birlikte inşa edelim.",
     "pages": "Sayfalar",
     "resources": "Kaynaklar",
     "contact": "İletişim",

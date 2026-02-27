@@ -12,6 +12,8 @@ import SchoolIcon from '@mui/icons-material/School';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import PsychologyIcon from '@mui/icons-material/Psychology';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
+import HubIcon from '@mui/icons-material/Hub';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import GroupsIcon from '@mui/icons-material/Groups';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
@@ -36,6 +38,14 @@ const PROGRAM_META = {
     Icon: AutoFixHighIcon,
     tags: ['Portfolio Development', '1:1 Mentorship', 'Interview Preparation', 'ML Workflow Integration', 'Career Transition'],
   },
+  rag: {
+    Icon: HubIcon,
+    tags: ['LangChain', 'LLM Agents', 'RAG Pipelines', 'Vector Databases', 'Tool-Use Frameworks', 'Pinecone'],
+  },
+  llm: {
+    Icon: AutoAwesomeIcon,
+    tags: ['LLM APIs', 'Prompt Engineering', 'Fine-tuning', 'Model Evaluation', 'Generative AI Applications'],
+  },
 };
 
 const FORMAT_ITEMS = [
@@ -44,7 +54,7 @@ const FORMAT_ITEMS = [
   { Icon: WorkspacePremiumIcon, labelKey: 'consulting', desc: 'Project consulting & career mentorship' },
 ];
 
-const programKeys = ['ds', 'ml', 'ai', 'career'];
+const programKeys = ['ds', 'ml', 'ai', 'career', 'rag', 'llm'];
 
 const TrainingPage = () => {
   const navigate = useNavigate();

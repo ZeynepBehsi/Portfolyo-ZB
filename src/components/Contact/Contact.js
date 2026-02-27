@@ -85,7 +85,8 @@ const Contact = () => {
           </Box>
 
           {/* Right — Form */}
-          <Box sx={{ flex: 1, width: '100%' }}>
+          <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+          <Box sx={{ width: { xs: '100%', md: 500 } }}>
             <Box component="form" onSubmit={handleSubmit}>
               <Stack spacing={3}>
                 {[
@@ -153,13 +154,12 @@ const Contact = () => {
                 <Box>
                   <Button
                     type="submit"
-                    variant="outlined"
+                    variant="contained"
                     size="large"
                     endIcon={<SendIcon sx={{ fontSize: '16px !important' }} />}
                     sx={{
-                      color: '#1a152e',
-                      borderColor: '#1a152e',
-                      borderWidth: '1.5px',
+                      bgcolor: '#FF6B35',
+                      color: '#ffffff',
                       px: 4,
                       py: 1.25,
                       fontWeight: 700,
@@ -167,8 +167,9 @@ const Contact = () => {
                       fontFamily: SR,
                       letterSpacing: '0.04em',
                       borderRadius: 9999,
-                      '&:hover': { bgcolor: '#82b440', color: '#ffffff', borderColor: '#82b440' },
-                      transition: 'all 0.2s',
+                      boxShadow: 'none',
+                      '&:hover': { bgcolor: '#82b440', boxShadow: 'none' },
+                      transition: 'background-color 0.25s ease',
                     }}
                   >
                     {t('contact.form.submit')}
@@ -176,6 +177,7 @@ const Contact = () => {
                 </Box>
               </Stack>
             </Box>
+          </Box>
           </Box>
         </Box>
       </Container>

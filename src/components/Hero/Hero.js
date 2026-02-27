@@ -11,7 +11,7 @@ const blink = keyframes`
   50%       { opacity: 0; }
 `;
 
-const TITLES = ['Data Scientist', 'AI Researcher', 'Automation Architect'];
+const TITLES = ['Data Scientist', 'AI Researcher'];
 
 
 const Hero = () => {
@@ -51,8 +51,17 @@ const Hero = () => {
         display: 'flex',
         alignItems: 'center',
         position: 'relative',
-        background: 'linear-gradient(135deg, #ffffff 0%, #f5f7fd 60%, #edf0fb 100%)',
+        bgcolor: '#1a152e',
         overflow: 'hidden',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          backgroundImage:
+            'linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)',
+          backgroundSize: '60px 60px',
+          pointerEvents: 'none',
+        },
       }}
     >
       {/* AI Agent Workflow Animation — right side */}
@@ -72,12 +81,12 @@ const Hero = () => {
         <AgentWorkflowAnimation />
       </Box>
 
-      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, pl: { xs: 3, sm: 4, md: 2 }, pr: { xs: 3, sm: 4, md: 4 } }}>
         {/* Greeting */}
         <Typography
           sx={{
             display: 'block',
-            color: '#1a152e',
+            color: 'rgba(255,255,255,0.55)',
             letterSpacing: '0.06em',
             fontSize: { xs: '1.3rem', md: '1.55rem' },
             fontWeight: 600,
@@ -97,7 +106,7 @@ const Hero = () => {
             fontSize: { xs: '3rem', sm: '4.5rem', md: '6.5rem', lg: '8rem' },
             lineHeight: 0.93,
             letterSpacing: '-0.04em',
-            color: '#1a152e',
+            color: '#ffffff',
             mb: 4,
             maxWidth: 900,
           }}
@@ -133,7 +142,7 @@ const Hero = () => {
         <Typography
           sx={{
             fontFamily: SR,
-            color: '#1a152e',
+            color: 'rgba(255,255,255,0.65)',
             fontSize: { xs: '1rem', md: '1.15rem' },
             fontWeight: 500,
             letterSpacing: '0.03em',
@@ -150,7 +159,7 @@ const Hero = () => {
         <Typography
           sx={{
             fontFamily: SR,
-            color: '#1a152e',
+            color: 'rgba(255,255,255,0.60)',
             fontSize: { xs: '0.95rem', md: '1.05rem' },
             fontWeight: 400,
             lineHeight: 1.7,
