@@ -1,195 +1,234 @@
-import { useState } from 'react';
-import {
-  Box,
-  Container,
-  Typography,
-  Card,
-  CardContent,
-  CardMedia,
-  Button,
-  Chip,
-  Stack,
-  Pagination,
-} from '@mui/material';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { Box, Container, Typography, Chip } from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { articles } from '../../data/articles';
 
-const articles = [
-  {
-    id: 1,
-    title: 'Makale Başlığı 1',
-    summary: 'Makalenin kısa özeti burada yer alacak. Yayın platformu veya dergi adı hakkında bilgi.',
-    image: 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=800',
-    category: 'Araştırma',
-    date: '2024',
-    url: '#',
-  },
-  {
-    id: 2,
-    title: 'Makale Başlığı 2',
-    summary: 'İkinci makalenin özeti. Araştırma konusu ve bulgular hakkında kısa bilgi verilecek.',
-    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800',
-    category: 'Blog',
-    date: '2024',
-    url: '#',
-  },
-  {
-    id: 3,
-    title: 'Makale Başlığı 3',
-    summary: 'Üçüncü yayının özeti. Blog yazısı veya akademik makale olabilir.',
-    image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800',
-    category: 'Akademik',
-    date: '2023',
-    url: '#',
-  },
-  {
-    id: 4,
-    title: 'Makale Başlığı 4',
-    summary: 'Dördüncü makale özeti. Teknoloji veya bilim konulu içerik detayları.',
-    image: 'https://images.unsplash.com/photo-1456324504439-367cee3b3c32?w=800',
-    category: 'Teknoloji',
-    date: '2023',
-    url: '#',
-  },
-  {
-    id: 5,
-    title: 'Makale Başlığı 5',
-    summary: 'Beşinci makale özeti. Kariyer veya kişisel gelişim konulu içerik.',
-    image: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800',
-    category: 'Kariyer',
-    date: '2023',
-    url: '#',
-  },
-  {
-    id: 6,
-    title: 'Makale Başlığı 6',
-    summary: 'Altıncı makale özeti. Yazılım geliştirme best practices konusu.',
-    image: 'https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=800',
-    category: 'Yazılım',
-    date: '2022',
-    url: '#',
-  },
-];
-
-const ITEMS_PER_PAGE = 4;
+const SR = "'Sora', sans-serif";
 
 const Articles = () => {
-  const [page, setPage] = useState(1);
-  const totalPages = Math.ceil(articles.length / ITEMS_PER_PAGE);
-  const startIndex = (page - 1) * ITEMS_PER_PAGE;
-  const currentArticles = articles.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return (
-    <Box
-      id="articles"
-      component="section"
-      sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        bgcolor: '#fff',
-        py: { xs: 6, md: 8 },
-      }}
-    >
+    <Box id="articles" component="section" sx={{ bgcolor: '#f2f1f3', py: { xs: 8, md: 11 } }}>
       <Container maxWidth="lg">
-        <Typography
-          variant="h2"
-          sx={{
-            textAlign: 'center',
-            color: '#1a1a1a',
-            fontSize: { xs: '2rem', md: '2.5rem' },
-            fontWeight: 700,
-            textTransform: 'uppercase',
-            mb: 1,
-          }}
-        >
-          Makaleler & Yayınlar
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{ textAlign: 'center', color: '#666', mb: 5 }}
-        >
-          Yayınlanmış yazılarım ve araştırmalarım
-        </Typography>
+        {/* Header */}
+        <Box sx={{ mb: 8, pb: 6, borderBottom: '1px solid #e4e4ea' }}>
+          <Typography
+            variant="overline"
+            sx={{ display: 'block', color: '#6b6880', letterSpacing: '0.15em', mb: 2, fontFamily: SR }}
+          >
+            Research
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column', md: 'row' },
+              justifyContent: 'space-between',
+              alignItems: { md: 'flex-end' },
+              gap: 3,
+            }}
+          >
+            <Typography
+              variant="h2"
+              sx={{
+                fontFamily: SR,
+                fontWeight: 700,
+                fontSize: { xs: '2.5rem', md: '3.5rem' },
+                letterSpacing: '-0.03em',
+                lineHeight: 1.05,
+                color: '#1a152e',
+              }}
+            >
+              {t('articles.title')}
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{ fontFamily: SR, color: '#2d2840', maxWidth: 360, lineHeight: 1.75, fontSize: '1rem' }}
+            >
+              {t('articles.subtitle')}
+            </Typography>
+          </Box>
+        </Box>
 
-        {/* 2x2 Grid */}
+        {/* 2-column card grid */}
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+            gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
             gap: 3,
-            mb: 4,
           }}
         >
-          {currentArticles.map((article) => (
-            <Card
+          {articles.map((article) => (
+            <Box
               key={article.id}
+              onClick={() => navigate(`/articles/${article.slug}`)}
               sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                bgcolor: '#fff',
+                bgcolor: '#ffffff',
+                border: '1px solid #e4e4ea',
                 borderRadius: 2,
                 overflow: 'hidden',
-                boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
-                transition: 'all 0.3s ease',
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                boxShadow: '0 2px 12px rgba(26,21,46,0.05)',
+                transition: 'all 0.25s ease',
                 '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: '0 12px 24px rgba(1, 77, 78, 0.15)',
+                  transform: 'translateY(-5px)',
+                  boxShadow: '0 16px 40px rgba(26,21,46,0.12)',
+                  borderColor: '#82b440',
+                  '& .article-arrow': { transform: 'translateX(4px)' },
                 },
               }}
             >
-              <CardMedia
-                component="img"
-                image={article.image}
-                alt={article.title}
-                sx={{ height: 180, objectFit: 'cover' }}
-              />
-              <CardContent sx={{ p: 2.5, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
-                  <Chip
-                    label={article.category}
-                    size="small"
-                    sx={{ bgcolor: '#014D4E', color: '#fff', fontSize: '0.7rem', height: 24 }}
-                  />
-                  <Typography variant="body2" sx={{ color: '#999', fontSize: '0.8rem' }}>
-                    {article.date}
+              {/* Cover image */}
+              <Box
+                sx={{
+                  width: '100%',
+                  height: 200,
+                  overflow: 'hidden',
+                  flexShrink: 0,
+                  bgcolor: '#e4e4ea',
+                }}
+              >
+                <Box
+                  component="img"
+                  src={article.image}
+                  alt={article.title}
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    display: 'block',
+                    transition: 'transform 0.4s ease',
+                    '&:hover': { transform: 'scale(1.04)' },
+                  }}
+                />
+              </Box>
+
+              {/* Card content */}
+              <Box sx={{ p: { xs: 3, md: 3.5 }, display: 'flex', flexDirection: 'column', flex: 1 }}>
+                {/* Meta row */}
+                <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 0.75, mb: 1.5 }}>
+                  <Typography
+                    sx={{
+                      fontFamily: SR,
+                      color: '#9b98a8',
+                      fontSize: '0.7rem',
+                      fontWeight: 700,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.08em',
+                    }}
+                  >
+                    {article.type} · {article.year}
                   </Typography>
-                </Stack>
-                <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a1a', mb: 0.5, fontSize: '1rem' }}>
+                  {article.status && (
+                    <Chip
+                      label={article.status}
+                      size="small"
+                      sx={{
+                        bgcolor: '#ffffff',
+                        color: '#2d2840',
+                        border: '1px solid #e4e4ea',
+                        fontWeight: 700,
+                        fontSize: '0.65rem',
+                        height: 20,
+                        fontFamily: SR,
+                      }}
+                    />
+                  )}
+                  {article.ieeeUrl && (
+                    <Chip
+                      label="IEEE Xplore"
+                      size="small"
+                      sx={{
+                        bgcolor: '#82b440',
+                        color: '#fff',
+                        fontWeight: 600,
+                        fontSize: '0.65rem',
+                        height: 20,
+                        fontFamily: SR,
+                      }}
+                    />
+                  )}
+                </Box>
+
+                {/* Title */}
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontFamily: SR,
+                    fontWeight: 700,
+                    color: '#1a152e',
+                    fontSize: { xs: '0.95rem', md: '1rem' },
+                    lineHeight: 1.45,
+                    mb: 1,
+                    letterSpacing: '-0.01em',
+                  }}
+                >
                   {article.title}
                 </Typography>
-                <Typography variant="body2" sx={{ color: '#666', mb: 1.5, fontSize: '0.85rem' }}>
-                  {article.summary}
+
+                {/* Authors + conference */}
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontFamily: SR,
+                    color: '#6b6880',
+                    fontSize: '0.8rem',
+                    mb: 1.5,
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {article.authors} — {article.conference}
                 </Typography>
-                <Box sx={{ mt: 'auto' }}>
-                  <Button
-                    size="small"
-                    endIcon={<OpenInNewIcon sx={{ fontSize: 16 }} />}
-                    href={article.url}
-                    target="_blank"
-                    sx={{ color: '#014D4E', p: 0 }}
+
+                {/* Description */}
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontFamily: SR,
+                    color: '#2d2840',
+                    fontSize: '0.875rem',
+                    lineHeight: 1.75,
+                    flex: 1,
+                  }}
+                >
+                  {article.description}
+                </Typography>
+
+                {/* Read more row */}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 0.5,
+                    mt: 2.5,
+                    pt: 2,
+                    borderTop: '1px solid #f2f1f3',
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontFamily: SR,
+                      color: '#1a152e',
+                      fontSize: '0.78rem',
+                      fontWeight: 700,
+                      letterSpacing: '0.04em',
+                    }}
                   >
-                    Devamını Oku
-                  </Button>
+                    {t('articles.readMore')}
+                  </Typography>
+                  <ArrowForwardIcon
+                    className="article-arrow"
+                    sx={{ color: '#1a152e', fontSize: 15, transition: 'transform 0.2s ease' }}
+                  />
                 </Box>
-              </CardContent>
-            </Card>
+              </Box>
+            </Box>
           ))}
         </Box>
-
-        {totalPages > 1 && (
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Pagination
-              count={totalPages}
-              page={page}
-              onChange={(_, v) => setPage(v)}
-              size="large"
-              sx={{
-                '& .MuiPaginationItem-root': { color: '#014D4E' },
-                '& .Mui-selected': { bgcolor: '#014D4E !important', color: '#fff' },
-              }}
-            />
-          </Box>
-        )}
       </Container>
     </Box>
   );

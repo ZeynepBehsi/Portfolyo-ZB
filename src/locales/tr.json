@@ -1,0 +1,136 @@
+{
+  "navbar": {
+    "home": "ANA SAYFA",
+    "about": "HAKKIMDA",
+    "portfolio": "PROJELER",
+    "expertise": "UZMANLIK",
+    "articles": "YAYINLAR",
+    "training": "TEACH & COACH",
+    "contact": "İLETİŞİM"
+  },
+  "hero": {
+    "greeting": "Merhaba, Ben",
+    "name": "Zeynep Behşi",
+    "tagline": "Veri Bilimcisi | Yapay Zeka Araştırmacısı | Otomasyon Mimarı",
+    "keywords": "LLM & Yapay Zeka Ajanları  ·  Graf Makine Öğrenmesi  ·  Makine Öğrenmesi  ·  Yapay Zeka  ·  İş Akışı Otomasyonu  ·  İş Zekası",
+    "cta": "Projelerim"
+  },
+  "about": {
+    "title": "Hakkımda",
+    "p1": "Pazarlama stratejisi, uygulamalı araştırma ve akıllı otomasyon alanlarını harmanlayan çok disiplinli bir geçmişe sahip Veri Bilimcisiyim. Kariyerim pazarlamada başladı; iki yıl boyunca veri odaklı kampanyalar tasarladım ve iş karar süreçleri için analitik çerçeveler oluşturdum — bu deneyim, her teknik probleme yaklaşımımı şekillendirdi: iş etkisini her zaman ön planda tutarak.",
+    "p2": "Graf tabanlı sahtekârlık tespiti üzerine dört konferans makalesi yayımladım (ICMLT 2026, UBMK 2025, SIU 2025). Şu an LLM destekli özerk yapay zeka ajan sistemleri ve akıllı iş akışı hatları oluşturmaya odaklanıyorum.",
+    "p3": "Aynı zamanda bir yapay zeka eğitmeniyim. Makine öğrenmesi, Python ve veri bilimi alanlarında eğitim programları tasarlıyor; yapay zeka çağında ustalık kazanmaya yönelik özgün bir müfredat sunuyorum — profesyonellere yalnızca nasıl kod yazacaklarını değil, yapay zeka ile stratejik olarak nasıl öğrenip gelişeceklerini öğretiyorum. Veri bilimine kariyer geçişleri için bire bir mentorluk ve proje danışmanlığı sağlıyorum.",
+    "cta": "İletişime Geç"
+  },
+  "expertise": {
+    "title": "Uzmanlık Alanları",
+    "subtitle": "Araştırmanın gerçek dünya etkisiyle buluştuğu yer.",
+    "cards": {
+      "graphML": {
+        "title": "Graf Makine Öğrenmesi ve Sahtekârlık Tespiti",
+        "description": "Graf sinir ağı mimarileri tasarlıyor ve finansal sistemlerdeki karmaşık sahtekârlık örüntülerini tespit etmek için graf teorisini uyguluyorum. Uluslararası ve IEEE indeksli konferanslarda kabul görmüş dört makaleyle yayımlanmış bir araştırmacıyım.",
+        "keywords": "GNN · Heterojen Graflar · NetworkX · PyTorch · Memgraph",
+        "highlight": "4 hakemli konferans makalesi"
+      },
+      "aiAgents": {
+        "title": "Yapay Zeka Ajanları ve LLM'ler",
+        "description": "Karmaşık çok adımlı görevleri akıl yürüterek planlayan ve yürüten özerk yapay zeka ajan sistemleri geliştiriyorum. Basit sohbet botlarının ötesine geçen, karar verme, araç kullanımı ve öz-düzeltme kapasitesine sahip akıllı sistemler tasarlıyorum.",
+        "keywords": "LangChain · LLM Orkestrasyonu · RAG · Araç Kullanan Ajanlar · İstem Mühendisliği",
+        "highlight": "Üretim ortamı ajan sistemleri geliştiriliyor"
+      },
+      "automation": {
+        "title": "Akıllı İş Akışı Otomasyonu",
+        "description": "Manuel iş süreçlerini yapay zeka destekli otomatik hatlara dönüştürüyorum. Veri toplamadan işleme, karar mantığından raporlamaya uzanan uçtan uca sistemler kurarak operasyonel yükü azaltıyor ve ölçeklenebilir çözümler sunuyorum.",
+        "keywords": "Süreç Otomasyonu · Hat Orkestrasyonu · API Entegrasyonu · Yapay Zeka Destekli İş Akışları",
+        "highlight": "Uçtan uca otomasyon çözümleri"
+      },
+      "timeSeries": {
+        "title": "Zaman Serileri ve İş Zekası",
+        "description": "Ham veriyi stratejik iş kararlarına dönüştüren tahmin modelleri ve analitik gösterge panelleri geliştiriyorum. Pazarlama analitiği geçmişimi teknik modelleme ile iş içgörüleri arasındaki köprüyü kurmak için kullanıyorum.",
+        "keywords": "Tahmin · Öngörücü Analitik · Veri Odaklı Strateji · Gösterge Paneli Tasarımı",
+        "highlight": "2 yıl pazarlama analitiği deneyimi"
+      }
+    }
+  },
+  "training": {
+    "title": "Eğitim & Mentorluk",
+    "subtitle": "Yeni nesil veri profesyonellerini güçlendirmek",
+    "intro": "Veri biliminde kariyer inşa eden veya AI'yı profesyonel araç setine entegre etmek isteyen bireyler için özelleşmiş eğitim programları ve bire bir mentorluk sunuyorum. Yaklaşımım; titiz teknik eğitimi, yapay zeka çağında etkili öğrenme ve büyüme stratejileriyle harmanlıyor.",
+    "sideDesc": "Veri bilimi profesyonelleri için AI destekli kurslar ve mentorluk programları. Bireysel, toplu ya da bire bir danışmanlık formatında — yapay zeka çağında kariyerinizi hızlandırmak için tasarlandı.",
+    "moreInfo": "Programları Keşfet →",
+    "cta": "Ücretsiz Danışma Görüşmesi Ayarla",
+    "programs": {
+      "ds": {
+        "title": "Veri Bilimine Giriş",
+        "description": "Python, istatistik, makine öğrenmesi ve proje geliştirme alanlarında kapsamlı eğitim — kariyer değişikliği yapmak isteyen ve sıfırdan veri bilimci olmayı hedefleyen kişiler için tasarlandı."
+      },
+      "ml": {
+        "title": "Makine Öğrenmesi & Derin Öğrenme",
+        "description": "Denetimli/denetimsiz öğrenme, sinir ağları, model değerlendirme ve uygulamalı projelerle dağıtımı kapsayan orta-ileri düzey program."
+      },
+      "ai": {
+        "title": "Yapay Zeka Destekli Öğrenme Programı",
+        "description": "Yapay zeka çağı için kritik becerileri inşa etmek üzere tasarlanmış özgün bir müfredat. Hızlandırılmış mesleki gelişim ve sürekli öğrenme için yapay zeka araçlarını stratejik olarak kullanmayı öğrenin."
+      },
+      "career": {
+        "title": "Kariyer & Proje Danışmanlığı",
+        "description": "Veri bilimine kariyer geçişi, portföy geliştirme, mülakat hazırlığı ve ML'yi profesyonel iş akışlarına entegre etmek için uygulamalı rehberlik sunan bire bir mentorluk."
+      }
+    }
+  },
+  "portfolio": {
+    "title": "Projelerim",
+    "subtitle": "Çalışmalarımdan bazı örnekler",
+    "details": "Detaylar",
+    "demo": "Demo",
+    "code": "Kod",
+    "modal": {
+      "projectDetails": "Proje Detayları",
+      "technologies": "Teknolojiler",
+      "relatedPublication": "İlgili Yayın",
+      "graphSimulation": "Graf Yapısı Simülasyonu",
+      "simulationDesc": "Heterogeneous graf yapısını ve embedding simülasyonunu interaktif olarak aşağıdan inceleyebilirsiniz."
+    }
+  },
+  "articles": {
+    "title": "Makaleler & Yayınlar",
+    "subtitle": "Yayınlanmış yazılarım ve araştırmalarım",
+    "readMore": "Devamını Oku"
+  },
+  "contact": {
+    "title": "İletişime Geçin",
+    "subtitle": "Projeleriniz, iş birlikleri veya herhangi bir soru için benimle iletişime geçebilirsiniz.",
+    "email": "E-posta",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "form": {
+      "heading": "Mesaj Gönderin",
+      "name": "Ad Soyad",
+      "namePlaceholder": "Adınız Soyadınız",
+      "email": "E-posta",
+      "emailPlaceholder": "ornek@email.com",
+      "subject": "Konu",
+      "subjectPlaceholder": "Mesaj konusu",
+      "message": "Mesaj",
+      "messagePlaceholder": "Mesajınızı yazın...",
+      "submit": "Gönder",
+      "successAlert": "Mesajınız gönderildi! (Backend bağlantısı yapılacak)"
+    }
+  },
+  "footer": {
+    "description": "Yeni dünyayı birlikte tasarlayalım ve inşa edelim.",
+    "pages": "Sayfalar",
+    "resources": "Kaynaklar",
+    "contact": "İletişim",
+    "links": {
+      "home": "Ana Sayfa",
+      "about": "Hakkımda",
+      "projects": "Projeler",
+      "articles": "Makaleler",
+      "blog": "Blog",
+      "docs": "Dökümanlar",
+      "resources": "Kaynaklar"
+    },
+    "copyright": "Portfolyo. Tüm hakları saklıdır."
+  }
+}

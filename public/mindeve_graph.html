@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heterogeneous Graph Visualization</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --bg-card: #12121a;
+    --bg-card-hover: #1a1a26;
+    --border: #1e1e2e;
+    --text: #e0e0ec;
+    --text-dim: #6b6b80;
+    --customer: #ff6b6b;
+    --customer-glow: #ff6b6b40;
+    --product: #4ecdc4;
+    --product-glow: #4ecdc440;
+    --store: #ffd93d;
+    --store-glow: #ffd93d40;
+    --fraud: #ff2d55;
+    --fraud-glow: #ff2d5560;
+    --edge-buys: #ff6b6b80;
+    --edge-visits: #ffd93d80;
+    --edge-sold: #4ecdc480;
+    --accent: #7c5cfc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  .header {
+    padding: 28px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #0a0a0fdd;
+  }
+
+  .header h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+  }
+
+  .header h1 span { color: var(--accent); }
+
+  .header-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+
+  .main-container {
+    display: grid;
+    grid-template-columns: 320px 1fr 300px;
+    gap: 0;
+    height: calc(100vh - 80px);
+  }
+
+  /* Left Panel - Node Info */
+  .left-panel {
+    border-right: 1px solid var(--border);
+    padding: 24px;
+    overflow-y: auto;
+  }
+
+  .section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+
+  .node-type-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .node-type-card:hover {
+    background: var(--bg-card-hover);
+    transform: translateX(4px);
+  }
+
+  .node-type-card.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px #7c5cfc15;
+  }
+
+  .node-type-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    border-radius: 0 3px 3px 0;
+  }
+
+  .node-type-card.customer::before { background: var(--customer); }
+  .node-type-card.product::before { background: var(--product); }
+  .node-type-card.store::before { background: var(--store); }
+
+  .node-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .node-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .node-icon.customer { background: var(--customer-glow); }
+  .node-icon.product { background: var(--product-glow); }
+  .node-icon.store { background: var(--store-glow); }
+
+  .node-card-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .node-card-count {
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .feature-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
+  }
+
+  .feature-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    padding: 3px 7px;
+    border-radius: 4px;
+    background: #ffffff08;
+    color: var(--text-dim);
+    border: 1px solid #ffffff08;
+  }
+
+  /* Center - Graph Canvas */
+  .graph-container {
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(ellipse at center, #12121a 0%, #0a0a0f 70%);
+  }
+
+  canvas#graphCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .graph-overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+  }
+
+  .control-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s;
+    backdrop-filter: blur(10px);
+  }
+
+  .control-btn:hover { background: var(--bg-card-hover); border-color: var(--accent); }
+  .control-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+  /* Right Panel - Edge Info + Stats */
+  .right-panel {
+    border-left: 1px solid var(--border);
+    padding: 24px;
+    overflow-y: auto;
+  }
+
+  .edge-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .edge-card:hover { background: var(--bg-card-hover); }
+
+  .edge-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .edge-arrow {
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
+  .edge-desc {
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .stat-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .fraud-indicator {
+    background: linear-gradient(135deg, #ff2d5515, #ff2d5505);
+    border: 1px solid #ff2d5530;
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 20px;
+  }
+
+  .fraud-indicator h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--fraud);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .fraud-indicator p {
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* Tooltip */
+  .tooltip {
+    position: absolute;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 12px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 50;
+    backdrop-filter: blur(20px);
+    max-width: 240px;
+    box-shadow: 0 8px 32px #00000060;
+  }
+
+  .tooltip.visible { opacity: 1; }
+
+  .tooltip-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .tooltip-detail {
+    font-size: 10px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .legend-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 20px;
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    z-index: 10;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .mode-label {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: var(--accent);
+    color: white;
+    z-index: 10;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 1100px) {
+    .main-container {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 500px auto;
+    }
+    .left-panel, .right-panel {
+      border: none;
+      border-bottom: 1px solid var(--border);
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Heterogeneous Graph Structure</h1>
+  <div class="header-badge">FRAUD DETECTION GNN</div>
+</div>
+
+<div class="main-container">
+  <!-- Left Panel -->
+  <div class="left-panel">
+    <div class="section-title">Node Types</div>
+
+    <div class="node-type-card customer active" onclick="highlightNodeType('customer')">
+      <div class="node-card-header">
+        <div class="node-icon customer">👤</div>
+        <div>
+          <div class="node-card-title">Customer</div>
+          <div class="node-card-count">~150K nodes · Target node</div>
+        </div>
+      </div>
+      <div class="feature-list">
+        <span class="feature-tag">transaction_count</span>
+        <span class="feature-tag">total_spending</span>
+        <span class="feature-tag">avg_txn_value</span>
+        <span class="feature-tag">unique_products</span>
+        <span class="feature-tag">unique_stores</span>
+        <span class="feature-tag">return_rate</span>
+        <span class="feature-tag">txn_velocity</span>
+        <span class="feature-tag">discount_rate</span>
+        <span class="feature-tag">campaign_rate</span>
+      </div>
+    </div>
+
+    <div class="node-type-card product" onclick="highlightNodeType('product')">
+      <div class="node-card-header">
+        <div class="node-icon product">📦</div>
+        <div>
+          <div class="node-card-title">Product</div>
+          <div class="node-card-count">~300K nodes</div>
+        </div>
+      </div>
+      <div class="feature-list">
+        <span class="feature-tag">popularity</span>
+        <span class="feature-tag">avg_price</span>
+        <span class="feature-tag">unique_customers</span>
+        <span class="feature-tag">discount_frequency</span>
+      </div>
+    </div>
+
+    <div class="node-type-card store" onclick="highlightNodeType('store')">
+      <div class="node-card-header">
+        <div class="node-icon store">🏪</div>
+        <div>
+          <div class="node-card-title">Store</div>
+          <div class="node-card-count">~500 nodes</div>
+        </div>
+      </div>
+      <div class="feature-list">
+        <span class="feature-tag">transaction_count</span>
+        <span class="feature-tag">unique_customers</span>
+        <span class="feature-tag">avg_txn_value</span>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top: 24px;">Graph Statistics</div>
+    <div class="stat-grid">
+      <div class="stat-box">
+        <div class="stat-value" style="color: var(--accent);">500K+</div>
+        <div class="stat-label">Total Nodes</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" style="color: var(--accent);">10M+</div>
+        <div class="stat-label">Total Edges</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Center - Graph -->
+  <div class="graph-container">
+    <canvas id="graphCanvas"></canvas>
+    <div class="legend-row">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--customer)"></div>Customer</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--product)"></div>Product</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--store)"></div>Store</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--fraud)"></div>Fraud</div>
+    </div>
+    <div class="mode-label" id="modeLabel">INTERACTIVE</div>
+    <div class="graph-overlay">
+      <button class="control-btn active" onclick="setMode('normal')" id="btnNormal">Normal View</button>
+      <button class="control-btn" onclick="setMode('fraud')" id="btnFraud">Fraud Highlight</button>
+      <button class="control-btn" onclick="setMode('message')" id="btnMessage">Message Passing</button>
+      <button class="control-btn" onclick="resetGraph()">Reset</button>
+    </div>
+    <div class="tooltip" id="tooltip">
+      <div class="tooltip-title" id="tooltipTitle"></div>
+      <div class="tooltip-detail" id="tooltipDetail"></div>
+    </div>
+  </div>
+
+  <!-- Right Panel -->
+  <div class="right-panel">
+    <div class="section-title">Edge Types (Relations)</div>
+
+    <div class="edge-card" onclick="highlightEdgeType('buys')">
+      <div class="edge-label">
+        <span style="color:var(--customer)">Customer</span>
+        <span class="edge-arrow">—buys→</span>
+        <span style="color:var(--product)">Product</span>
+      </div>
+      <div class="edge-desc">Müşterinin satın aldığı ürünler. Her unique (customer, product) çifti bir edge oluşturur.</div>
+    </div>
+
+    <div class="edge-card" onclick="highlightEdgeType('bought_by')">
+      <div class="edge-label">
+        <span style="color:var(--product)">Product</span>
+        <span class="edge-arrow">—bought_by→</span>
+        <span style="color:var(--customer)">Customer</span>
+      </div>
+      <div class="edge-desc">Reverse edge. GNN'in mesaj geçişinde bidirectional bilgi akışı sağlar.</div>
+    </div>
+
+    <div class="edge-card" onclick="highlightEdgeType('visits')">
+      <div class="edge-label">
+        <span style="color:var(--customer)">Customer</span>
+        <span class="edge-arrow">—visits→</span>
+        <span style="color:var(--store)">Store</span>
+      </div>
+      <div class="edge-desc">Müşterinin alışveriş yaptığı mağazalar. Coğrafi ve davranışsal pattern'leri yakalar.</div>
+    </div>
+
+    <div class="edge-card" onclick="highlightEdgeType('visited_by')">
+      <div class="edge-label">
+        <span style="color:var(--store)">Store</span>
+        <span class="edge-arrow">—visited_by→</span>
+        <span style="color:var(--customer)">Customer</span>
+      </div>
+      <div class="edge-desc">Reverse edge. Mağaza perspektifinden müşteri bilgisi aktarır.</div>
+    </div>
+
+    <div class="edge-card" onclick="highlightEdgeType('sold_at')">
+      <div class="edge-label">
+        <span style="color:var(--product)">Product</span>
+        <span class="edge-arrow">—sold_at→</span>
+        <span style="color:var(--store)">Store</span>
+      </div>
+      <div class="edge-desc">Ürünün satıldığı mağaza. Ürün-mağaza ilişkisini modeller.</div>
+    </div>
+
+    <div class="edge-card" onclick="highlightEdgeType('sells')">
+      <div class="edge-label">
+        <span style="color:var(--store)">Store</span>
+        <span class="edge-arrow">—sells→</span>
+        <span style="color:var(--product)">Product</span>
+      </div>
+      <div class="edge-desc">Reverse edge. Mağazanın hangi ürünleri sattığı bilgisini taşır.</div>
+    </div>
+
+    <div class="fraud-indicator">
+      <h4>🚨 Fraud Label</h4>
+      <p>Customer node'larına atanan fraud_label (y), transaction-level fraud skorlarının customer seviyesine aggregate edilmesiyle oluşur. Dual-labeling stratejisi: training için synthetic labels, validation için ground truth labels kullanılır.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('graphCanvas');
+const ctx = canvas.getContext('2d');
+const tooltip = document.getElementById('tooltip');
+
+let W, H, dpr;
+let nodes = [];
+let edges = [];
+let currentMode = 'normal';
+let highlightedType = null;
+let highlightedEdge = null;
+let animFrame = 0;
+let hoveredNode = null;
+let mouseX = 0, mouseY = 0;
+let messagePulses = [];
+
+const COLORS = {
+  customer: '#ff6b6b',
+  product: '#4ecdc4',
+  store: '#ffd93d',
+  fraud: '#ff2d55'
+};
+
+function resize() {
+  dpr = window.devicePixelRatio || 1;
+  W = canvas.parentElement.clientWidth;
+  H = canvas.parentElement.clientHeight;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+function generateGraph() {
+  nodes = [];
+  edges = [];
+
+  const cx = W / 2;
+  const cy = H / 2;
+
+  // --- Stores (center cluster, few big nodes) ---
+  const numStores = 5;
+  for (let i = 0; i < numStores; i++) {
+    const angle = (i / numStores) * Math.PI * 2 - Math.PI / 2;
+    const r = 50 + Math.random() * 30;
+    nodes.push({
+      id: `store_${i}`, type: 'store',
+      x: cx + Math.cos(angle) * r,
+      y: cy + Math.sin(angle) * r,
+      radius: 14 + Math.random() * 4,
+      vx: 0, vy: 0,
+      features: ['txn_count', 'unique_customers', 'avg_txn_value'],
+      label: `Store ${i + 1}`
+    });
+  }
+
+  // --- Products (middle ring) ---
+  const numProducts = 30;
+  for (let i = 0; i < numProducts; i++) {
+    const angle = (i / numProducts) * Math.PI * 2 + Math.random() * 0.3;
+    const r = 130 + Math.random() * 60;
+    nodes.push({
+      id: `product_${i}`, type: 'product',
+      x: cx + Math.cos(angle) * r,
+      y: cy + Math.sin(angle) * r,
+      radius: 6 + Math.random() * 3,
+      vx: 0, vy: 0,
+      features: ['popularity', 'avg_price', 'unique_customers', 'discount_freq'],
+      label: `Product ${i + 1}`
+    });
+  }
+
+  // --- Customers (outer ring) ---
+  const numCustomers = 50;
+  const fraudIndices = new Set();
+  while (fraudIndices.size < 5) {
+    fraudIndices.add(Math.floor(Math.random() * numCustomers));
+  }
+
+  for (let i = 0; i < numCustomers; i++) {
+    const angle = (i / numCustomers) * Math.PI * 2 + Math.random() * 0.2;
+    const r = 230 + Math.random() * 70;
+    const isFraud = fraudIndices.has(i);
+    nodes.push({
+      id: `customer_${i}`, type: 'customer',
+      x: cx + Math.cos(angle) * r,
+      y: cy + Math.sin(angle) * r,
+      radius: 5 + Math.random() * 3,
+      vx: 0, vy: 0,
+      isFraud,
+      features: ['txn_count', 'total_spending', 'avg_txn_value', 'return_rate', 'velocity'],
+      label: `Customer ${i + 1}${isFraud ? ' ⚠️' : ''}`
+    });
+  }
+
+  // --- Edges ---
+  const customers = nodes.filter(n => n.type === 'customer');
+  const products = nodes.filter(n => n.type === 'product');
+  const stores = nodes.filter(n => n.type === 'store');
+
+  // Customer → Product (buys)
+  customers.forEach(c => {
+    const numBuys = c.isFraud ? 5 + Math.floor(Math.random() * 6) : 1 + Math.floor(Math.random() * 4);
+    const shuffled = [...products].sort(() => Math.random() - 0.5);
+    for (let i = 0; i < Math.min(numBuys, shuffled.length); i++) {
+      edges.push({ source: c.id, target: shuffled[i].id, type: 'buys', relType: 'customer-product' });
+    }
+  });
+
+  // Customer → Store (visits)
+  customers.forEach(c => {
+    const numVisits = c.isFraud ? 3 + Math.floor(Math.random() * 3) : 1 + Math.floor(Math.random() * 2);
+    const shuffled = [...stores].sort(() => Math.random() - 0.5);
+    for (let i = 0; i < Math.min(numVisits, shuffled.length); i++) {
+      edges.push({ source: c.id, target: shuffled[i].id, type: 'visits', relType: 'customer-store' });
+    }
+  });
+
+  // Product → Store (sold_at)
+  products.forEach(p => {
+    const numStores2 = 1 + Math.floor(Math.random() * 2);
+    const shuffled = [...stores].sort(() => Math.random() - 0.5);
+    for (let i = 0; i < Math.min(numStores2, shuffled.length); i++) {
+      edges.push({ source: p.id, target: shuffled[i].id, type: 'sold_at', relType: 'product-store' });
+    }
+  });
+}
+
+function getNode(id) {
+  return nodes.find(n => n.id === id);
+}
+
+function drawEdge(e, alpha) {
+  const s = getNode(e.source);
+  const t = getNode(e.target);
+  if (!s || !t) return;
+
+  ctx.beginPath();
+  ctx.moveTo(s.x, s.y);
+  ctx.lineTo(t.x, t.y);
+
+  let color;
+  if (e.relType === 'customer-product') color = COLORS.customer;
+  else if (e.relType === 'customer-store') color = COLORS.store;
+  else color = COLORS.product;
+
+  ctx.strokeStyle = color.replace(')', `, ${alpha})`).replace('rgb', 'rgba').replace('#', '');
+
+  // Hex to rgba
+  const r = parseInt(color.slice(1, 3), 16);
+  const g = parseInt(color.slice(3, 5), 16);
+  const b = parseInt(color.slice(5, 7), 16);
+  ctx.strokeStyle = `rgba(${r},${g},${b},${alpha})`;
+  ctx.lineWidth = 0.6;
+  ctx.stroke();
+}
+
+function drawNode(n, frame) {
+  const isHighlighted = highlightedType === n.type || highlightedType === null;
+  const isFraudMode = currentMode === 'fraud';
+  const showFraud = isFraudMode && n.isFraud;
+
+  let alpha = isHighlighted ? 1 : 0.15;
+  let radius = n.radius;
+  let color = COLORS[n.type];
+
+  if (showFraud) {
+    color = COLORS.fraud;
+    radius = n.radius + 3 + Math.sin(frame * 0.05) * 2;
+  }
+
+  if (n === hoveredNode) {
+    radius = n.radius + 4;
+    alpha = 1;
+  }
+
+  // Glow
+  if (showFraud || n === hoveredNode) {
+    const glowColor = showFraud ? COLORS.fraud : color;
+    const gradient = ctx.createRadialGradient(n.x, n.y, radius * 0.5, n.x, n.y, radius * 3);
+    gradient.addColorStop(0, glowColor + '40');
+    gradient.addColorStop(1, glowColor + '00');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, radius * 3, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Node circle
+  ctx.beginPath();
+  ctx.arc(n.x, n.y, radius, 0, Math.PI * 2);
+  ctx.fillStyle = color;
+  ctx.globalAlpha = alpha;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+
+  // Border
+  if (n === hoveredNode || showFraud) {
+    ctx.strokeStyle = showFraud ? COLORS.fraud : '#ffffff40';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+}
+
+function drawMessagePassing(frame) {
+  if (currentMode !== 'message') return;
+
+  const speed = 0.008;
+  const numPulses = 40;
+
+  if (messagePulses.length === 0) {
+    for (let i = 0; i < numPulses; i++) {
+      const e = edges[Math.floor(Math.random() * edges.length)];
+      messagePulses.push({
+        edge: e,
+        t: Math.random(),
+        speed: speed + Math.random() * 0.004,
+        reverse: Math.random() > 0.5
+      });
+    }
+  }
+
+  messagePulses.forEach(p => {
+    const s = getNode(p.edge.source);
+    const t = getNode(p.edge.target);
+    if (!s || !t) return;
+
+    p.t += p.speed;
+    if (p.t > 1) {
+      p.t = 0;
+      p.reverse = !p.reverse;
+    }
+
+    const progress = p.reverse ? 1 - p.t : p.t;
+    const px = s.x + (t.x - s.x) * progress;
+    const py = s.y + (t.y - s.y) * progress;
+
+    let color;
+    if (p.edge.relType === 'customer-product') color = COLORS.customer;
+    else if (p.edge.relType === 'customer-store') color = COLORS.store;
+    else color = COLORS.product;
+
+    const gradient = ctx.createRadialGradient(px, py, 0, px, py, 6);
+    gradient.addColorStop(0, color);
+    gradient.addColorStop(1, color + '00');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(px, py, 6, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Bright core
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(px, py, 1.5, 0, Math.PI * 2);
+    ctx.fill();
+  });
+}
+
+function draw() {
+  animFrame++;
+  ctx.clearRect(0, 0, W, H);
+
+  // Draw grid dots
+  ctx.fillStyle = '#ffffff06';
+  for (let x = 0; x < W; x += 30) {
+    for (let y = 0; y < H; y += 30) {
+      ctx.fillRect(x, y, 1, 1);
+    }
+  }
+
+  // Edges
+  edges.forEach(e => {
+    let alpha = 0.08;
+    if (highlightedType) {
+      const s = getNode(e.source);
+      const t = getNode(e.target);
+      if (s.type === highlightedType || t.type === highlightedType) alpha = 0.2;
+      else alpha = 0.02;
+    }
+    if (hoveredNode) {
+      if (e.source === hoveredNode.id || e.target === hoveredNode.id) alpha = 0.5;
+      else alpha = 0.02;
+    }
+    if (highlightedEdge) {
+      if (e.type === highlightedEdge) alpha = 0.4;
+      else alpha = 0.02;
+    }
+    drawEdge(e, alpha);
+  });
+
+  // Message passing animation
+  drawMessagePassing(animFrame);
+
+  // Nodes
+  nodes.forEach(n => drawNode(n, animFrame));
+
+  // Gentle floating motion
+  nodes.forEach(n => {
+    n.x += Math.sin(animFrame * 0.01 + nodes.indexOf(n)) * 0.08;
+    n.y += Math.cos(animFrame * 0.012 + nodes.indexOf(n) * 0.5) * 0.06;
+  });
+
+  requestAnimationFrame(draw);
+}
+
+function setMode(mode) {
+  currentMode = mode;
+  messagePulses = [];
+  document.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
+  if (mode === 'normal') document.getElementById('btnNormal').classList.add('active');
+  if (mode === 'fraud') document.getElementById('btnFraud').classList.add('active');
+  if (mode === 'message') document.getElementById('btnMessage').classList.add('active');
+
+  const labels = { normal: 'INTERACTIVE', fraud: 'FRAUD DETECTION', message: 'MESSAGE PASSING' };
+  document.getElementById('modeLabel').textContent = labels[mode];
+}
+
+function highlightNodeType(type) {
+  highlightedType = highlightedType === type ? null : type;
+  highlightedEdge = null;
+  document.querySelectorAll('.node-type-card').forEach(c => {
+    c.classList.toggle('active', c.classList.contains(highlightedType));
+  });
+}
+
+function highlightEdgeType(type) {
+  highlightedEdge = highlightedEdge === type ? null : type;
+  highlightedType = null;
+}
+
+function resetGraph() {
+  highlightedType = null;
+  highlightedEdge = null;
+  hoveredNode = null;
+  messagePulses = [];
+  currentMode = 'normal';
+  setMode('normal');
+  generateGraph();
+}
+
+canvas.addEventListener('mousemove', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  mouseX = e.clientX - rect.left;
+  mouseY = e.clientY - rect.top;
+
+  hoveredNode = null;
+  for (const n of nodes) {
+    const dx = n.x - mouseX;
+    const dy = n.y - mouseY;
+    if (Math.sqrt(dx * dx + dy * dy) < n.radius + 8) {
+      hoveredNode = n;
+      break;
+    }
+  }
+
+  if (hoveredNode) {
+    const connectedEdges = edges.filter(e => e.source === hoveredNode.id || e.target === hoveredNode.id);
+    const connections = new Set();
+    connectedEdges.forEach(e => {
+      connections.add(e.source === hoveredNode.id ? e.target : e.source);
+    });
+
+    tooltip.classList.add('visible');
+    tooltip.style.left = (mouseX + 16) + 'px';
+    tooltip.style.top = (mouseY - 10) + 'px';
+
+    document.getElementById('tooltipTitle').textContent = hoveredNode.label;
+    let detail = `Type: ${hoveredNode.type}\nConnections: ${connectedEdges.length}\n`;
+    if (hoveredNode.isFraud) detail += '⚠️ FRAUD FLAGGED\n';
+    detail += `Features: ${hoveredNode.features.join(', ')}`;
+    document.getElementById('tooltipDetail').textContent = detail;
+    document.getElementById('tooltipDetail').style.whiteSpace = 'pre-line';
+  } else {
+    tooltip.classList.remove('visible');
+  }
+});
+
+canvas.addEventListener('mouseleave', () => {
+  hoveredNode = null;
+  tooltip.classList.remove('visible');
+});
+
+window.addEventListener('resize', () => {
+  resize();
+  generateGraph();
+});
+
+// Init
+resize();
+generateGraph();
+draw();
+</script>
+
+</body>
+</html>

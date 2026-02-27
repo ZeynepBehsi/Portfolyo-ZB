@@ -1,0 +1,136 @@
+{
+  "navbar": {
+    "home": "HOME",
+    "about": "ABOUT",
+    "portfolio": "PROJECTS",
+    "expertise": "EXPERTISE",
+    "articles": "PUBLICATIONS",
+    "training": "TEACH & COACH",
+    "contact": "CONTACT"
+  },
+  "hero": {
+    "greeting": "Hello, I'm",
+    "name": "Zeynep Behşi",
+    "tagline": "Data Scientist | AI Researcher | Automation Architect",
+    "keywords": "LLM & AI Agents  ·  Graph ML  ·  Machine Learning  ·  Artificial Intelligence  ·  Workflow Automation  ·  Business Intelligence",
+    "cta": "My Projects"
+  },
+  "about": {
+    "title": "About Me",
+    "p1": "I am a Data Scientist with a multidisciplinary background that bridges marketing strategy, applied research, and intelligent automation. My career started in marketing, where I spent two years designing data-driven campaigns and building analytical frameworks for business decision-making — an experience that shaped how I approach every technical problem: with the end business impact in mind.",
+    "p2": "Published researcher with four conference papers on graph-based fraud detection (ICMLT 2026, UBMK 2025, SIU 2025). Currently focused on building autonomous AI agent systems and intelligent workflow pipelines powered by LLMs.",
+    "p3": "I am also an AI educator. I design training programs in machine learning, Python, and data science, and I offer a proprietary curriculum focused on mastering AI-era skills — teaching professionals not just how to code, but how to learn and grow strategically with AI. I provide one-on-one mentorship and project consulting for career transitions into data science.",
+    "cta": "Get in Touch"
+  },
+  "expertise": {
+    "title": "Areas of Expertise",
+    "subtitle": "Where research meets real-world impact.",
+    "cards": {
+      "graphML": {
+        "title": "Graph ML & Fraud Detection",
+        "description": "Designing graph neural network architectures and applying graph theory to detect sophisticated fraud patterns in financial systems. Published researcher with four accepted papers at international and IEEE-indexed conferences.",
+        "keywords": "GNN · Heterogeneous Graphs · NetworkX · PyTorch · Memgraph",
+        "highlight": "4 peer-reviewed conference papers"
+      },
+      "aiAgents": {
+        "title": "AI Agents & LLMs",
+        "description": "Building autonomous AI agent systems that reason, plan, and execute complex multi-step tasks. Designing LLM-powered solutions that go beyond simple chatbots — creating intelligent systems capable of decision-making, tool use, and self-correction.",
+        "keywords": "LangChain · LLM Orchestration · RAG · Tool-Use Agents · Prompt Engineering",
+        "highlight": "Actively building production agent systems"
+      },
+      "automation": {
+        "title": "Intelligent Workflow Automation",
+        "description": "Transforming manual business processes into AI-driven automated pipelines. From data collection and processing to decision logic and reporting — building systems that reduce operational overhead and scale intelligently.",
+        "keywords": "Process Automation · Pipeline Orchestration · API Integration · AI-Driven Workflows",
+        "highlight": "End-to-end automation solutions"
+      },
+      "timeSeries": {
+        "title": "Time Series & Business Intelligence",
+        "description": "Developing forecasting models and analytical dashboards that translate raw data into strategic business decisions. Leveraging a marketing analytics background to bridge the gap between technical modeling and actionable business insights.",
+        "keywords": "Forecasting · Predictive Analytics · Data-Driven Strategy · Dashboard Design",
+        "highlight": "2 years of marketing analytics experience"
+      }
+    }
+  },
+  "training": {
+    "title": "Training & Mentorship",
+    "subtitle": "Empowering the next generation of data professionals",
+    "intro": "I offer specialized training programs and one-on-one mentorship for individuals building careers in data science or looking to integrate AI into their professional toolkit. My approach combines rigorous technical training with strategic thinking about how to learn and grow effectively in the AI era.",
+    "sideDesc": "AI-powered courses and mentorship programs for data science professionals. Available as individual sessions, group classes, or one-on-one consulting — designed to accelerate your AI-era career.",
+    "moreInfo": "Explore Programs →",
+    "cta": "Book a Free Consultation",
+    "programs": {
+      "ds": {
+        "title": "Data Science Fundamentals",
+        "description": "Comprehensive training in Python, statistics, ML, and project development — designed for career changers and aspiring data scientists building from the ground up."
+      },
+      "ml": {
+        "title": "Machine Learning & Deep Learning",
+        "description": "Intermediate to advanced program covering supervised/unsupervised learning, neural networks, model evaluation, and deployment with hands-on projects."
+      },
+      "ai": {
+        "title": "AI-Powered Learning Program",
+        "description": "A proprietary curriculum designed to build the critical skills for the AI era. Master how to leverage AI tools strategically for accelerated professional development and continuous learning."
+      },
+      "career": {
+        "title": "Career & Project Consulting",
+        "description": "One-on-one mentorship for career transitions into data science, portfolio development, interview preparation, and hands-on guidance for integrating ML into professional workflows."
+      }
+    }
+  },
+  "portfolio": {
+    "title": "My Projects",
+    "subtitle": "Some highlights from my work",
+    "details": "Details",
+    "demo": "Demo",
+    "code": "Code",
+    "modal": {
+      "projectDetails": "Project Details",
+      "technologies": "Technologies",
+      "relatedPublication": "Related Publication",
+      "graphSimulation": "Graph Structure Simulation",
+      "simulationDesc": "Interactively explore the heterogeneous graph structure and embedding simulation below."
+    }
+  },
+  "articles": {
+    "title": "Articles & Publications",
+    "subtitle": "My published writings and research",
+    "readMore": "Read More"
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "Feel free to reach out for projects, collaborations, or any questions.",
+    "email": "Email",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "form": {
+      "heading": "Send a Message",
+      "name": "Full Name",
+      "namePlaceholder": "Your Full Name",
+      "email": "Email",
+      "emailPlaceholder": "example@email.com",
+      "subject": "Subject",
+      "subjectPlaceholder": "Message subject",
+      "message": "Message",
+      "messagePlaceholder": "Write your message...",
+      "submit": "Send",
+      "successAlert": "Your message has been sent! (Backend integration pending)"
+    }
+  },
+  "footer": {
+    "description": "Let's design and build the new world together.",
+    "pages": "Pages",
+    "resources": "Resources",
+    "contact": "Contact",
+    "links": {
+      "home": "Home",
+      "about": "About",
+      "projects": "Projects",
+      "articles": "Articles",
+      "blog": "Blog",
+      "docs": "Documentation",
+      "resources": "Resources"
+    },
+    "copyright": "Portfolio. All rights reserved."
+  }
+}

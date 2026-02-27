@@ -1,355 +1,186 @@
 import { useState } from 'react';
-import {
-  Box,
-  Container,
-  Typography,
-  TextField,
-  Button,
-  Stack,
-} from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { Box, Container, Typography, TextField, Button, Stack } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import EmailIcon from '@mui/icons-material/Email';
 
-const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
+const SR = "'Sora', sans-serif";
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+const Contact = () => {
+  const { t } = useTranslation();
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form data:', formData);
-    alert('Mesajınız gönderildi! (Backend bağlantısı yapılacak)');
+    alert(t('contact.form.successAlert'));
   };
 
+  const socialLinks = [
+    { icon: <EmailIcon sx={{ color: '#1a152e', fontSize: 18 }} />, label: t('contact.email'), href: 'mailto:zeynepbehsi@gmail.com', display: 'zeynepbehsi@gmail.com' },
+    { icon: <LinkedInIcon sx={{ color: '#1a152e', fontSize: 18 }} />, label: t('contact.linkedin'), href: 'https://www.linkedin.com/in/zeynep-behsi/', display: 'linkedin.com/in/zeynep-behsi' },
+    { icon: <GitHubIcon sx={{ color: '#1a152e', fontSize: 18 }} />, label: t('contact.github'), href: 'https://github.com/ZeynepBehsi', display: 'github.com/ZeynepBehsi' },
+    {
+      icon: <Box component="img" src="/researchgate-icon.webp" alt="ResearchGate" sx={{ width: 18, height: 18, objectFit: 'contain' }} />,
+      label: 'ResearchGate',
+      href: 'https://www.researchgate.net/profile/Zeynep-Behsi',
+      display: 'researchgate.net/profile/Zeynep-Behsi',
+    },
+  ];
+
   return (
-    <Box
-      id="contact"
-      component="section"
-      sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        bgcolor: '#f5f5f5',
-        py: { xs: 6, md: 8 },
-      }}
-    >
+    <Box id="contact" component="section" sx={{ bgcolor: '#f2f1f3', py: { xs: 8, md: 11 } }}>
       <Container maxWidth="lg">
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', md: 'row' },
-            gap: { xs: 5, md: 8 },
-            alignItems: 'center',
-          }}
-        >
-          {/* Sol Taraf - İletişim Bilgileri */}
-          <Box sx={{ flex: 1 }}>
-            <Typography
-              variant="h3"
-              sx={{
-                color: '#1a1a1a',
-                fontSize: { xs: '2rem', md: '2.5rem' },
-                fontWeight: 700,
-                mb: 2,
-              }}
-            >
-              İletişime Geçin
+        {/* Header */}
+        <Box sx={{ mb: 8, pb: 6, borderBottom: '1px solid #e4e4ea' }}>
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { md: 'flex-end' }, gap: 3 }}>
+            <Typography variant="h2" sx={{ fontFamily: SR, fontWeight: 700, fontSize: { xs: '2.5rem', md: '3.5rem' }, letterSpacing: '-0.03em', lineHeight: 1.05, color: '#1a152e' }}>
+              {t('contact.title')}
             </Typography>
-            <Typography
-              variant="body1"
-              sx={{
-                color: '#666',
-                mb: 5,
-                fontSize: '1rem',
-                lineHeight: 1.8,
-              }}
-            >
-              Projeleriniz, iş birlikleri veya herhangi bir soru için benimle
-              iletişime geçebilirsiniz.
-            </Typography>
+          </Box>
+        </Box>
 
-            <Stack spacing={3}>
-              {/* Email */}
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Box
-                  sx={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: '50%',
-                    border: '2px solid #014D4E',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <EmailIcon sx={{ color: '#014D4E', fontSize: 24 }} />
-                </Box>
-                <Box>
-                  <Typography variant="body2" sx={{ color: '#999', fontSize: '0.85rem' }}>
-                    Email
-                  </Typography>
-                  <Typography
+        {/* Two-column layout */}
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: { xs: 6, md: 8 }, alignItems: 'flex-start' }}>
+          {/* Left — Contact links */}
+          <Box sx={{ flex: '0 0 auto', width: { md: 300 } }}>
+            <Stack spacing={0}>
+              {socialLinks.map((item, i) => (
+                <Box key={item.label}>
+                  <Box
                     component="a"
-                    href="mailto:zeynep.behsi@email.com"
+                    href={item.href}
+                    target={item.href.startsWith('http') ? '_blank' : undefined}
+                    rel="noopener noreferrer"
                     sx={{
-                      color: '#1a1a1a',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 2,
+                      py: 3,
                       textDecoration: 'none',
-                      fontSize: '1rem',
-                      '&:hover': { color: '#014D4E' },
+                      transition: 'all 0.2s',
+                      '&:hover .contact-label': { color: '#1a152e' },
+                      '&:hover .contact-arrow': { transform: 'translateX(4px)' },
                     }}
                   >
-                    zeynep.behsi@email.com
-                  </Typography>
+                    <Box sx={{ width: 36, height: 36, borderRadius: 1, bgcolor: '#FFFFFF', border: '1px solid #e4e4ea', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      {item.icon}
+                    </Box>
+                    <Box sx={{ flex: 1 }}>
+                      <Typography sx={{ fontFamily: SR, color: '#9b98a8', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', mb: 0.25 }}>
+                        {item.label}
+                      </Typography>
+                      <Typography className="contact-label" sx={{ fontFamily: SR, color: '#2d2840', fontSize: '0.875rem', fontWeight: 500, transition: 'color 0.2s' }}>
+                        {item.display}
+                      </Typography>
+                    </Box>
+                  </Box>
+                  {i < socialLinks.length - 1 && <Box sx={{ borderBottom: '1px solid #e4e4ea' }} />}
                 </Box>
-              </Box>
-
-              {/* LinkedIn */}
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Box
-                  sx={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: '50%',
-                    border: '2px solid #014D4E',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <LinkedInIcon sx={{ color: '#014D4E', fontSize: 24 }} />
-                </Box>
-                <Box>
-                  <Typography variant="body2" sx={{ color: '#999', fontSize: '0.85rem' }}>
-                    LinkedIn
-                  </Typography>
-                  <Typography
-                    component="a"
-                    href="https://linkedin.com/in/"
-                    target="_blank"
-                    sx={{
-                      color: '#1a1a1a',
-                      textDecoration: 'none',
-                      fontSize: '1rem',
-                      '&:hover': { color: '#014D4E' },
-                    }}
-                  >
-                    linkedin.com/in/zeynepbehsi
-                  </Typography>
-                </Box>
-              </Box>
-
-              {/* GitHub */}
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Box
-                  sx={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: '50%',
-                    border: '2px solid #014D4E',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <GitHubIcon sx={{ color: '#014D4E', fontSize: 24 }} />
-                </Box>
-                <Box>
-                  <Typography variant="body2" sx={{ color: '#999', fontSize: '0.85rem' }}>
-                    GitHub
-                  </Typography>
-                  <Typography
-                    component="a"
-                    href="https://github.com/"
-                    target="_blank"
-                    sx={{
-                      color: '#1a1a1a',
-                      textDecoration: 'none',
-                      fontSize: '1rem',
-                      '&:hover': { color: '#014D4E' },
-                    }}
-                  >
-                    github.com/zeynepbehsi
-                  </Typography>
-                </Box>
-              </Box>
+              ))}
             </Stack>
           </Box>
 
-          {/* Sağ Taraf - Form (Koyu teal arka plan + görsel overlay) */}
-          <Box
-            sx={{
-              flex: 1,
-              width: '100%',
-              maxWidth: { md: 500 },
-            }}
-          >
-            <Box
-              sx={{
-                position: 'relative',
-                borderRadius: 3,
-                overflow: 'hidden',
-                bgcolor: '#014D4E',
-                '&::before': {
-                  content: '""',
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  background: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920") center/cover',
-                  opacity: 0.15,
-                },
-              }}
-            >
-              <Box
-                component="form"
-                onSubmit={handleSubmit}
-                sx={{
-                  position: 'relative',
-                  zIndex: 1,
-                  p: { xs: 3, md: 4 },
-                }}
-              >
-              <Typography
-                variant="h6"
-                sx={{ color: '#fff', fontWeight: 600, mb: 3 }}
-              >
-                Mesaj Gönderin
-              </Typography>
+          {/* Right — Form */}
+          <Box sx={{ flex: 1, width: '100%' }}>
+            <Box component="form" onSubmit={handleSubmit}>
+              <Stack spacing={3}>
+                {[
+                  { key: 'name', type: 'text' },
+                  { key: 'email', type: 'email' },
+                  { key: 'subject', type: 'text' },
+                ].map(({ key, type }) => (
+                  <Box key={key}>
+                    <Typography variant="body2" sx={{ color: '#1a152e', mb: 1, fontWeight: 600, fontSize: '0.82rem', textTransform: 'uppercase', letterSpacing: '0.06em', fontFamily: SR }}>
+                      {t(`contact.form.${key}`)}
+                    </Typography>
+                    <TextField
+                      fullWidth
+                      placeholder={t(`contact.form.${key}Placeholder`)}
+                      name={key}
+                      type={type}
+                      value={formData[key]}
+                      onChange={handleChange}
+                      required
+                      size="small"
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          bgcolor: '#FFFFFF',
+                          color: '#1a152e',
+                          fontFamily: SR,
+                          borderRadius: 1,
+                          '& fieldset': { borderColor: '#e4e4ea' },
+                          '&:hover fieldset': { borderColor: '#d0cdd8' },
+                          '&.Mui-focused fieldset': { borderColor: '#82b440', borderWidth: '1px' },
+                          '& input': { fontFamily: SR, fontSize: '0.9rem' },
+                        },
+                      }}
+                    />
+                  </Box>
+                ))}
 
-              <Stack spacing={2.5}>
                 <Box>
-                  <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.8)', mb: 0.5, fontWeight: 500 }}>
-                    Ad Soyad
+                  <Typography variant="body2" sx={{ color: '#1a152e', mb: 1, fontWeight: 600, fontSize: '0.82rem', textTransform: 'uppercase', letterSpacing: '0.06em', fontFamily: SR }}>
+                    {t('contact.form.message')}
                   </Typography>
                   <TextField
                     fullWidth
-                    placeholder="Adınız Soyadınız"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    size="small"
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        bgcolor: '#fff',
-                        '& fieldset': { borderColor: 'transparent' },
-                        '&:hover fieldset': { borderColor: '#014D4E' },
-                        '&.Mui-focused fieldset': { borderColor: '#014D4E' },
-                      },
-                    }}
-                  />
-                </Box>
-
-                <Box>
-                  <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.8)', mb: 0.5, fontWeight: 500 }}>
-                    E-posta
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    placeholder="ornek@email.com"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    size="small"
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        bgcolor: '#fff',
-                        '& fieldset': { borderColor: 'transparent' },
-                        '&:hover fieldset': { borderColor: '#014D4E' },
-                        '&.Mui-focused fieldset': { borderColor: '#014D4E' },
-                      },
-                    }}
-                  />
-                </Box>
-
-                <Box>
-                  <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.8)', mb: 0.5, fontWeight: 500 }}>
-                    Konu
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    placeholder="Mesaj konusu"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    required
-                    size="small"
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        bgcolor: '#fff',
-                        '& fieldset': { borderColor: 'transparent' },
-                        '&:hover fieldset': { borderColor: '#014D4E' },
-                        '&.Mui-focused fieldset': { borderColor: '#014D4E' },
-                      },
-                    }}
-                  />
-                </Box>
-
-                <Box>
-                  <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.8)', mb: 0.5, fontWeight: 500 }}>
-                    Mesaj
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    placeholder="Mesajınızı yazın..."
+                    placeholder={t('contact.form.messagePlaceholder')}
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     required
                     multiline
-                    rows={4}
+                    rows={5}
                     sx={{
                       '& .MuiOutlinedInput-root': {
-                        bgcolor: '#fff',
-                        '& fieldset': { borderColor: 'transparent' },
-                        '&:hover fieldset': { borderColor: '#014D4E' },
-                        '&.Mui-focused fieldset': { borderColor: '#014D4E' },
+                        bgcolor: '#FFFFFF',
+                        color: '#1a152e',
+                        fontFamily: SR,
+                        borderRadius: 1,
+                        '& fieldset': { borderColor: '#e4e4ea' },
+                        '&:hover fieldset': { borderColor: '#d0cdd8' },
+                        '&.Mui-focused fieldset': { borderColor: '#82b440', borderWidth: '1px' },
+                        '& textarea': { fontFamily: SR, fontSize: '0.9rem' },
                       },
                     }}
                   />
                 </Box>
 
-                <Button
-                  type="submit"
-                  variant="contained"
-                  size="large"
-                  endIcon={<SendIcon />}
-                  sx={{
-                    bgcolor: '#fff',
-                    color: '#014D4E',
-                    py: 1.5,
-                    fontWeight: 600,
-                    borderRadius: 1.5,
-                    alignSelf: 'flex-end',
-                    px: 4,
-                    '&:hover': { bgcolor: 'rgba(255,255,255,0.9)' },
-                  }}
-                >
-                  Gönder
-                </Button>
+                <Box>
+                  <Button
+                    type="submit"
+                    variant="outlined"
+                    size="large"
+                    endIcon={<SendIcon sx={{ fontSize: '16px !important' }} />}
+                    sx={{
+                      color: '#1a152e',
+                      borderColor: '#1a152e',
+                      borderWidth: '1.5px',
+                      px: 4,
+                      py: 1.25,
+                      fontWeight: 700,
+                      fontSize: '0.85rem',
+                      fontFamily: SR,
+                      letterSpacing: '0.04em',
+                      borderRadius: 9999,
+                      '&:hover': { bgcolor: '#82b440', color: '#ffffff', borderColor: '#82b440' },
+                      transition: 'all 0.2s',
+                    }}
+                  >
+                    {t('contact.form.submit')}
+                  </Button>
+                </Box>
               </Stack>
             </Box>
           </Box>
         </Box>
-      </Box>
-    </Container>
-  </Box>
-);
+      </Container>
+    </Box>
+  );
 };
 
 export default Contact;

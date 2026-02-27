@@ -1,6 +1,47 @@
-import { Box, Container, Typography, Button, Stack } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Box, Container, Typography, Button } from '@mui/material';
+import { keyframes } from '@mui/system';
+import AgentWorkflowAnimation from './AgentWorkflowAnimation';
+
+const SR = "'Sora', sans-serif";
+
+const blink = keyframes`
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+`;
+
+const TITLES = ['Data Scientist', 'AI Researcher', 'Automation Architect'];
+
 
 const Hero = () => {
+  const { t } = useTranslation();
+  const [titleIdx, setTitleIdx] = useState(0);
+  const [displayed, setDisplayed] = useState('');
+  const [phase, setPhase] = useState('typing');
+
+  useEffect(() => {
+    const current = TITLES[titleIdx];
+    let timeout;
+    if (phase === 'typing') {
+      if (displayed.length < current.length) {
+        timeout = setTimeout(() => setDisplayed(current.slice(0, displayed.length + 1)), 80);
+      } else {
+        timeout = setTimeout(() => setPhase('pausing'), 1800);
+      }
+    } else if (phase === 'pausing') {
+      timeout = setTimeout(() => setPhase('deleting'), 400);
+    } else if (phase === 'deleting') {
+      if (displayed.length > 0) {
+        timeout = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 45);
+      } else {
+        setTitleIdx((i) => (i + 1) % TITLES.length);
+        setPhase('typing');
+      }
+    }
+    return () => clearTimeout(timeout);
+  }, [displayed, phase, titleIdx]);
+
   return (
     <Box
       id="hero"
@@ -10,119 +51,139 @@ const Hero = () => {
         display: 'flex',
         alignItems: 'center',
         position: 'relative',
-        background: 'linear-gradient(135deg, #014D4E 0%, #026c6d 50%, #013536 100%)',
+        background: 'linear-gradient(135deg, #ffffff 0%, #f5f7fd 60%, #edf0fb 100%)',
         overflow: 'hidden',
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920") center/cover',
-          opacity: 0.3,
-        },
       }}
     >
+      {/* AI Agent Workflow Animation — right side */}
+      <Box
+        sx={{
+          display: { xs: 'none', md: 'block' },
+          position: 'absolute',
+          right: 0,
+          top: 0,
+          width: '50%',
+          height: '100%',
+          zIndex: 0,
+          WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, white 28%)',
+          maskImage: 'linear-gradient(90deg, transparent 0%, white 28%)',
+        }}
+      >
+        <AgentWorkflowAnimation />
+      </Box>
+
       <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-        <Box sx={{ maxWidth: 650 }}>
-          <Typography
-            variant="h1"
-            sx={{
-              color: '#fff',
-              fontSize: { xs: '2.5rem', md: '3.5rem', lg: '4rem' },
-              fontStyle: 'italic',
-              mb: 1,
-              textTransform: 'uppercase',
-            }}
-          >
-            Merhaba, Ben
-          </Typography>
-
-          <Typography
-            variant="h1"
-            sx={{
-              color: '#fff',
-              fontSize: { xs: '2.5rem', md: '3.5rem', lg: '4rem' },
-              fontWeight: 400,
-              textTransform: 'uppercase',
-              mb: 4,
-            }}
-          >
-            İsim Soyisim
-          </Typography>
-
-          <Typography
-            variant="body1"
-            sx={{
-              color: 'rgba(255,255,255,0.8)',
-              mb: 2,
-              fontSize: '1.1rem',
-            }}
-          >
-            Kısa bir tanıtım metni buraya gelecek.
-          </Typography>
-
-          <Typography
-            variant="body1"
-            sx={{
-              color: 'rgba(255,255,255,0.7)',
-              mb: 5,
-              fontSize: '1rem',
-            }}
-          >
-            Uzmanlık alanınız ve ilgi alanlarınız hakkında birkaç cümle.
-          </Typography>
-
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center">
-            <Button
-              variant="contained"
-              size="large"
-              href="#portfolio"
-              sx={{
-                bgcolor: '#fff',
-                color: '#014D4E',
-                px: 5,
-                py: 1.5,
-                fontSize: '1rem',
-                '&:hover': {
-                  bgcolor: 'rgba(255,255,255,0.9)',
-                },
-              }}
-            >
-              Projelerim
-            </Button>
-          </Stack>
-        </Box>
-
-        {/* Sağda kart carousel hint - opsiyonel */}
-        <Box
+        {/* Greeting */}
+        <Typography
           sx={{
-            display: { xs: 'none', lg: 'flex' },
-            position: 'absolute',
-            right: 0,
-            top: '50%',
-            transform: 'translateY(-50%)',
-            gap: 2,
+            display: 'block',
+            color: '#1a152e',
+            letterSpacing: '0.06em',
+            fontSize: { xs: '1.3rem', md: '1.55rem' },
+            fontWeight: 600,
+            mb: 2.5,
+            fontFamily: SR,
           }}
         >
-          <Box
+          {t('hero.greeting')}
+        </Typography>
+
+        {/* Name */}
+        <Typography
+          variant="h1"
+          sx={{
+            fontFamily: SR,
+            fontWeight: 800,
+            fontSize: { xs: '3rem', sm: '4.5rem', md: '6.5rem', lg: '8rem' },
+            lineHeight: 0.93,
+            letterSpacing: '-0.04em',
+            color: '#1a152e',
+            mb: 4,
+            maxWidth: 900,
+          }}
+        >
+          {t('hero.name')}
+        </Typography>
+
+        {/* Typewriter */}
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5, minHeight: { xs: '2.2rem', md: '2.8rem' } }}>
+          <Typography
             sx={{
-              width: 220,
-              height: 280,
-              borderRadius: 2,
-              overflow: 'hidden',
-              boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
+              fontFamily: SR,
+              fontWeight: 700,
+              fontSize: { xs: '1.3rem', md: '1.75rem' },
+              color: '#82b440',
+              letterSpacing: '-0.01em',
             }}
           >
-            <Box
-              component="img"
-              src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=400"
-              alt="Project 1"
-              sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-          </Box>
+            {displayed}
+          </Typography>
+          <Box
+            sx={{
+              width: 2,
+              height: { xs: '1.3rem', md: '1.75rem' },
+              bgcolor: '#82b440',
+              ml: '3px',
+              animation: `${blink} 1s step-end infinite`,
+            }}
+          />
         </Box>
+
+        {/* Static role line — all titles always visible */}
+        <Typography
+          sx={{
+            fontFamily: SR,
+            color: '#1a152e',
+            fontSize: { xs: '1rem', md: '1.15rem' },
+            fontWeight: 500,
+            letterSpacing: '0.03em',
+            mb: 5,
+          }}
+        >
+          {TITLES.join('  ·  ')}
+        </Typography>
+
+        {/* Green accent line */}
+        <Box sx={{ width: 52, height: 4, bgcolor: '#82b440', mb: 5, borderRadius: 9999 }} />
+
+        {/* Keywords */}
+        <Typography
+          sx={{
+            fontFamily: SR,
+            color: '#1a152e',
+            fontSize: { xs: '0.95rem', md: '1.05rem' },
+            fontWeight: 400,
+            lineHeight: 1.7,
+            maxWidth: 560,
+            mb: 4,
+          }}
+        >
+          {t('hero.keywords')}
+        </Typography>
+
+        {/* CTA Button */}
+        <Button
+          variant="contained"
+          size="large"
+          href="#portfolio"
+          sx={{
+            bgcolor: '#FF6B35',
+            color: '#ffffff',
+            px: 4.5,
+            py: 1.75,
+            fontSize: '0.75rem',
+            fontWeight: 700,
+            borderRadius: 9999,
+            fontFamily: SR,
+            letterSpacing: '0.1em',
+            whiteSpace: 'nowrap',
+            boxShadow: 'none',
+            transition: 'background-color 0.25s ease',
+            '&:hover': { bgcolor: '#e55a28', boxShadow: 'none' },
+          }}
+        >
+          {t('hero.cta')} →
+        </Button>
       </Container>
     </Box>
   );
