@@ -73,7 +73,7 @@ const Contact = () => {
                       <Typography sx={{ fontFamily: SR, color: '#9b98a8', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', mb: 0.25 }}>
                         {item.label}
                       </Typography>
-                      <Typography className="contact-label" sx={{ fontFamily: SR, color: '#2d2840', fontSize: '0.875rem', fontWeight: 500, transition: 'color 0.2s' }}>
+                      <Typography className="contact-label" noWrap sx={{ fontFamily: SR, color: '#2d2840', fontSize: '0.875rem', fontWeight: 500, transition: 'color 0.2s' }}>
                         {item.display}
                       </Typography>
                     </Box>
