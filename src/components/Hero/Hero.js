@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Container, Typography, Button } from '@mui/material';
 import { keyframes } from '@mui/system';
-import AgentWorkflowAnimation from './AgentWorkflowAnimation';
 
 const SR = "'Sora', sans-serif";
 
@@ -51,7 +50,7 @@ const Hero = () => {
         display: 'flex',
         alignItems: 'center',
         position: 'relative',
-        bgcolor: '#1a152e',
+        bgcolor: '#0d1215',
         overflow: 'hidden',
         '&::before': {
           content: '""',
@@ -64,24 +63,38 @@ const Hero = () => {
         },
       }}
     >
-      {/* AI Agent Workflow Animation — right side */}
+      {/* Artemis image — right side */}
       <Box
         sx={{
           display: { xs: 'none', md: 'block' },
           position: 'absolute',
           right: 0,
           top: 0,
-          width: '50%',
+          width: '64%',
           height: '100%',
+          overflow: 'hidden',
           zIndex: 0,
-          WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, white 28%)',
-          maskImage: 'linear-gradient(90deg, transparent 0%, white 28%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 80% 90% at 80% 50%, white 40%, transparent 100%)',
+          maskImage: 'radial-gradient(ellipse 80% 90% at 80% 50%, white 40%, transparent 100%)',
         }}
       >
-        <AgentWorkflowAnimation />
+        <Box
+          component="img"
+          src="/artemis3.png"
+          alt="Artemis"
+          sx={{
+            position: 'absolute',
+            right: 0,
+            top: 0,
+            width: '125%',
+            maxHeight: '100%',
+            objectFit: 'contain',
+            objectPosition: 'top right',
+          }}
+        />
       </Box>
 
-      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, pl: { xs: 3, sm: 4, md: 2 }, pr: { xs: 3, sm: 4, md: 4 } }}>
+      <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1, pl: { xs: 3, sm: 4, md: 4 }, pr: { xs: 3, sm: 4, md: 4 } }}>
         {/* Greeting */}
         <Typography
           sx={{

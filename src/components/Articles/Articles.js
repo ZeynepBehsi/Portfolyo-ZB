@@ -38,7 +38,7 @@ const Articles = () => {
                 fontSize: { xs: '2.5rem', md: '3.5rem' },
                 letterSpacing: '-0.03em',
                 lineHeight: 1.05,
-                color: '#1a152e',
+                color: '#0d1215',
               }}
             >
               {t('articles.title')}

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -40,6 +40,7 @@ const ProjectDetail = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
+  const [simActive, setSimActive] = useState(false);
 
   useEffect(() => {
     if (location.state?.scrollTo) {
@@ -79,7 +80,7 @@ const ProjectDetail = () => {
           pt: '80px',
           position: 'relative',
           height: { xs: 240, md: 300 },
-          background: 'linear-gradient(160deg, #1a152e 0%, #2d2840 60%, #1a152e 100%)',
+          background: '#0d1215',
           overflow: 'hidden',
           display: 'flex',
           alignItems: 'flex-end',
@@ -156,61 +157,6 @@ const ProjectDetail = () => {
           </Box>
         )}
 
-        {/* Publication + Technologies */}
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 3, mb: 3 }}>
-          {project.publication && (
-            <Box sx={CARD_STYLE}>
-              <Typography variant="subtitle1" sx={SECTION_TITLE_STYLE}>
-                {t('portfolio.modal.relatedPublication')}
-              </Typography>
-              {project.publicationTitle && (
-                <Typography
-                  variant="body2"
-                  sx={{ color: '#1a152e', fontWeight: 600, mb: 1.5, lineHeight: 1.6, fontSize: '0.9rem', fontFamily: "'Sora', sans-serif" }}
-                >
-                  {project.publicationTitle}
-                </Typography>
-              )}
-              <Chip
-                label={`📄  ${project.publication}`}
-                sx={{
-                  bgcolor: '#ffffff',
-                  color: '#2d2840',
-                  border: '1px solid #e4e4ea',
-                  fontSize: '0.85rem',
-                  height: 32,
-                  fontWeight: 500,
-                  fontFamily: "'Sora', sans-serif",
-                }}
-              />
-            </Box>
-          )}
-
-          <Box sx={CARD_STYLE}>
-            <Typography variant="subtitle1" sx={SECTION_TITLE_STYLE}>
-              {t('portfolio.modal.technologies')}
-            </Typography>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-              {(project.allTags || project.tags).map((tag) => (
-                <Chip
-                  key={tag}
-                  label={tag}
-                  size="small"
-                  sx={{
-                    bgcolor: '#ffffff',
-                    color: '#2d2840',
-                    border: '1px solid #e4e4ea',
-                    fontSize: '0.75rem',
-                    height: 26,
-                    fontWeight: 600,
-                    fontFamily: "'Sora', sans-serif",
-                  }}
-                />
-              ))}
-            </Box>
-          </Box>
-        </Box>
-
         {/* Demo + Source Code */}
         {(project.localEmbed || project.liveUrl || project.githubUrl) && (
           <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 3, mb: 3 }}>
@@ -238,7 +184,7 @@ const ProjectDetail = () => {
                   Demo
                 </Typography>
                 <Typography variant="body2" sx={{ color: '#6b6880', fontSize: '0.8rem', textAlign: 'center', fontFamily: "'Sora', sans-serif" }}>
-                  {project.localEmbed ? 'View the interactive graph simulation' : 'Open live demo'}
+                  {project.localEmbed ? 'View the interactive simulation' : 'Open live demo'}
                 </Typography>
               </Box>
             )}
@@ -270,6 +216,85 @@ const ProjectDetail = () => {
             )}
           </Box>
         )}
+
+        {/* Publication (left) + Technologies (right) — only for projects with publication */}
+        {project.publication ? (
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 3, mb: 3 }}>
+            <Box sx={CARD_STYLE}>
+              <Typography variant="subtitle1" sx={SECTION_TITLE_STYLE}>
+                {t('portfolio.modal.relatedPublication')}
+              </Typography>
+              {project.publicationTitle && (
+                <Typography
+                  variant="body2"
+                  sx={{ color: '#1a152e', fontWeight: 600, mb: 1.5, lineHeight: 1.6, fontSize: '0.9rem', fontFamily: "'Sora', sans-serif" }}
+                >
+                  {project.publicationTitle}
+                </Typography>
+              )}
+              <Chip
+                label={`📄  ${project.publication}`}
+                sx={{
+                  bgcolor: '#ffffff',
+                  color: '#2d2840',
+                  border: '1px solid #e4e4ea',
+                  fontSize: '0.85rem',
+                  height: 32,
+                  fontWeight: 500,
+                  fontFamily: "'Sora', sans-serif",
+                }}
+              />
+            </Box>
+            <Box sx={CARD_STYLE}>
+              <Typography variant="subtitle1" sx={SECTION_TITLE_STYLE}>
+                {t('portfolio.modal.technologies')}
+              </Typography>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                {(project.allTags || project.tags).map((tag) => (
+                  <Chip
+                    key={tag}
+                    label={tag}
+                    size="small"
+                    sx={{
+                      bgcolor: '#ffffff',
+                      color: '#2d2840',
+                      border: '1px solid #e4e4ea',
+                      fontSize: '0.75rem',
+                      height: 26,
+                      fontWeight: 600,
+                      fontFamily: "'Sora', sans-serif",
+                    }}
+                  />
+                ))}
+              </Box>
+            </Box>
+          </Box>
+        ) : (
+          /* Technologies — full width, for projects without publication */
+          <Box sx={{ ...CARD_STYLE, mb: 3 }}>
+            <Typography variant="subtitle1" sx={SECTION_TITLE_STYLE}>
+              {t('portfolio.modal.technologies')}
+            </Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+              {(project.allTags || project.tags).map((tag) => (
+                <Chip
+                  key={tag}
+                  label={tag}
+                  size="small"
+                  sx={{
+                    bgcolor: '#ffffff',
+                    color: '#2d2840',
+                    border: '1px solid #e4e4ea',
+                    fontSize: '0.75rem',
+                    height: 26,
+                    fontWeight: 600,
+                    fontFamily: "'Sora', sans-serif",
+                  }}
+                />
+              ))}
+            </Box>
+          </Box>
+        )}
       </Container>
 
       {/* Graph Simulation */}
@@ -284,14 +309,135 @@ const ProjectDetail = () => {
                 {t('portfolio.modal.simulationDesc')}
               </Typography>
             </Box>
-            <iframe
-              src={project.localEmbed}
-              title={`${project.title} Graph Simulation`}
-              width="100%"
-              style={{ border: 'none', display: 'block', height: 'calc(100vh - 80px)' }}
-              allow="clipboard-write"
-              allowFullScreen
-            />
+            <Box sx={{ position: 'relative', height: 'calc(100vh - 80px)' }}>
+              <iframe
+                src={project.localEmbed}
+                title={`${project.title} Graph Simulation`}
+                width="100%"
+                height="100%"
+                style={{ border: 'none', display: 'block', pointerEvents: simActive ? 'auto' : 'none' }}
+                allow="clipboard-write"
+                allowFullScreen
+              />
+              {!simActive && (
+                <Box
+                  onClick={() => setSimActive(true)}
+                  sx={{
+                    position: 'absolute',
+                    inset: 0,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    bgcolor: 'rgba(0,0,0,0.08)',
+                    transition: 'bgcolor 0.2s',
+                    '&:hover': { bgcolor: 'rgba(0,0,0,0.14)' },
+                  }}
+                >
+                  <Box sx={{ bgcolor: 'rgba(255,255,255,0.92)', borderRadius: 2, px: 3, py: 1.5, boxShadow: '0 4px 16px rgba(0,0,0,0.12)' }}>
+                    <Typography sx={{ fontFamily: SR, fontWeight: 600, fontSize: '0.9rem', color: '#1a152e' }}>
+                      Click to interact
+                    </Typography>
+                  </Box>
+                </Box>
+              )}
+            </Box>
+
+            {project.discoveryGuide && (
+              <Box sx={{ p: { xs: 3, md: 5 }, borderTop: '1px solid #e4e4ea', bgcolor: '#fafafa' }}>
+
+                {/* Header */}
+                <Typography variant="subtitle1" sx={{ ...SECTION_TITLE_STYLE, fontSize: '0.72rem', mb: 1 }}>
+                  Demo Discovery Guide
+                </Typography>
+                <Typography variant="body2" sx={{ color: '#6b6880', fontFamily: SR, fontSize: '0.9rem', mb: 4, maxWidth: 640, lineHeight: 1.7 }}>
+                  {project.discoveryGuide.intro}
+                </Typography>
+
+                {/* Modes */}
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 4 }}>
+                  {project.discoveryGuide.modes.map((mode) => (
+                    <Box key={mode.id} sx={{ bgcolor: '#ffffff', border: '1px solid #e4e4ea', borderRadius: 2, p: 3, borderLeft: '3px solid #82b440' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1.5, mb: 1 }}>
+                        <Typography sx={{ fontFamily: SR, fontSize: '0.65rem', fontWeight: 700, color: 'rgba(26,21,46,0.3)', letterSpacing: '0.1em' }}>
+                          {mode.id}
+                        </Typography>
+                        <Typography sx={{ fontFamily: SR, fontWeight: 700, fontSize: '0.9rem', color: '#1a152e' }}>
+                          {mode.title}
+                        </Typography>
+                      </Box>
+                      <Typography variant="body2" sx={{ color: '#2d2840', lineHeight: 1.75, fontFamily: SR, mb: mode.items || mode.tip ? 1.5 : 0 }}>
+                        {mode.desc}
+                      </Typography>
+                      {mode.items && (
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, mb: mode.tip ? 1.5 : 0 }}>
+                          {mode.items.map((item, i) => (
+                            <Box key={i} sx={{ display: 'flex', gap: 1.5, alignItems: 'flex-start' }}>
+                              <Box sx={{ width: 5, height: 5, borderRadius: '50%', bgcolor: '#82b440', mt: '7px', flexShrink: 0 }} />
+                              <Typography variant="body2" sx={{ fontFamily: SR, color: '#2d2840', lineHeight: 1.7, fontSize: '0.85rem' }}>
+                                {item}
+                              </Typography>
+                            </Box>
+                          ))}
+                        </Box>
+                      )}
+                      {mode.tip && (
+                        <Box sx={{ bgcolor: '#f7faf3', border: '1px solid rgba(130,180,64,0.25)', borderRadius: 1.5, px: 2, py: 1.25 }}>
+                          <Typography variant="body2" sx={{ fontFamily: SR, color: '#4a6a2a', fontSize: '0.82rem', lineHeight: 1.65 }}>
+                            → {mode.tip}
+                          </Typography>
+                        </Box>
+                      )}
+                    </Box>
+                  ))}
+                </Box>
+
+                {/* Tips */}
+                <Typography variant="subtitle1" sx={{ ...SECTION_TITLE_STYLE, fontSize: '0.68rem', mb: 1.5 }}>
+                  Interaction Tips
+                </Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75, mb: 4 }}>
+                  {project.discoveryGuide.tips.map((tip, i) => (
+                    <Typography key={i} variant="body2" sx={{ fontFamily: SR, color: '#6b6880', fontSize: '0.85rem', lineHeight: 1.6 }}>
+                      {tip}
+                    </Typography>
+                  ))}
+                </Box>
+
+                {/* Key Metrics */}
+                <Typography variant="subtitle1" sx={{ ...SECTION_TITLE_STYLE, fontSize: '0.68rem', mb: 1.5 }}>
+                  Key Metrics
+                </Typography>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5, mb: 4 }}>
+                  {project.discoveryGuide.metrics.map((m) => (
+                    <Box key={m.label} sx={{ bgcolor: '#ffffff', border: '1px solid #e4e4ea', borderRadius: 1.5, px: 2, py: 1.25, minWidth: 100 }}>
+                      <Typography sx={{ fontFamily: SR, fontWeight: 800, fontSize: '1.1rem', color: '#1a152e', lineHeight: 1.1 }}>
+                        {m.value}
+                      </Typography>
+                      <Typography sx={{ fontFamily: SR, fontSize: '0.7rem', color: '#9b98a8', fontWeight: 600, letterSpacing: '0.04em', mt: 0.25 }}>
+                        {m.label}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Box>
+
+                {/* Data Sources */}
+                <Typography variant="subtitle1" sx={{ ...SECTION_TITLE_STYLE, fontSize: '0.68rem', mb: 1.5 }}>
+                  Data Sources
+                </Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
+                  {project.discoveryGuide.dataSources.map((src, i) => (
+                    <Box key={i} sx={{ display: 'flex', gap: 1.5, alignItems: 'flex-start' }}>
+                      <Box sx={{ width: 5, height: 5, borderRadius: '50%', bgcolor: '#9b98a8', mt: '7px', flexShrink: 0 }} />
+                      <Typography variant="body2" sx={{ fontFamily: SR, color: '#6b6880', fontSize: '0.85rem', lineHeight: 1.6 }}>
+                        {src}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Box>
+
+              </Box>
+            )}
 
             {project.simulationNotes && (
               <Box sx={{ p: { xs: 3, md: 4 }, borderTop: '1px solid #e4e4ea' }}>

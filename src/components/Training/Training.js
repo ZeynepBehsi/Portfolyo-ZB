@@ -32,7 +32,7 @@ const Training = () => {
               fontSize: { xs: '2.5rem', md: '3.5rem' },
               letterSpacing: '-0.03em',
               lineHeight: 1.05,
-              color: '#1a152e',
+              color: '#0d1215',
             }}
           >
             {t('training.title')}
@@ -107,7 +107,7 @@ const Training = () => {
               {/* Outer nodes — static */}
               {NODES.map((node) => (
                 <g key={node.key}>
-                  <circle cx={node.x} cy={node.y} r={NR} fill="#2D2D3F" />
+                  <circle cx={node.x} cy={node.y} r={NR} fill="#0d1215" />
                   {node.lines.map((line, li) => {
                     const lineH = 19;
                     const totalH = (node.lines.length - 1) * lineH;
@@ -185,7 +185,7 @@ const Training = () => {
                 to="/training"
                 variant="contained"
                 sx={{
-                  bgcolor: '#1a152e',
+                  bgcolor: '#0d1215',
                   color: '#ffffff',
                   px: 4,
                   py: 1.6,

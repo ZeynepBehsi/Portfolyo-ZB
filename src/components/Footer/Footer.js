@@ -18,7 +18,7 @@ const Footer = () => {
   ];
 
   return (
-    <Box component="footer" sx={{ bgcolor: '#1a152e', pt: { xs: 8, md: 10 }, pb: { xs: 4, md: 5 } }}>
+    <Box component="footer" sx={{ bgcolor: '#0d1215', pt: { xs: 8, md: 10 }, pb: { xs: 4, md: 5 } }}>
       <Container maxWidth="lg">
         {/* Top row */}
         <Box

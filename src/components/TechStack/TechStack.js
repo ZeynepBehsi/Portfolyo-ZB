@@ -120,7 +120,7 @@ const TechStack = () => (
     id="techstack"
     component="section"
     sx={{
-      bgcolor: '#1a152e',
+      bgcolor: '#0d1215',
       py: { xs: 8, md: 11 },
       position: 'relative',
       overflow: 'hidden',

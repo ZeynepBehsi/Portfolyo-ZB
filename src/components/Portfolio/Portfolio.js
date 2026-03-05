@@ -24,7 +24,7 @@ const Portfolio = () => {
         {/* Header */}
         <Box sx={{ mb: 8, pb: 6, borderBottom: '1px solid #e4e4ea' }}>
           <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { md: 'flex-end' }, gap: 3 }}>
-            <Typography variant="h2" sx={{ fontFamily: SR, fontWeight: 700, fontSize: { xs: '2.5rem', md: '3.5rem' }, letterSpacing: '-0.03em', lineHeight: 1.05, color: '#1a152e' }}>
+            <Typography variant="h2" sx={{ fontFamily: SR, fontWeight: 700, fontSize: { xs: '2.5rem', md: '3.5rem' }, letterSpacing: '-0.03em', lineHeight: 1.05, color: '#0d1215' }}>
               {t('portfolio.title')}
             </Typography>
             <Typography variant="body1" sx={{ fontFamily: SR, color: '#2d2840', maxWidth: 360, lineHeight: 1.75, fontSize: '1rem' }}>
